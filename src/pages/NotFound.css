@@ -1,0 +1,196 @@
+/* ══ 404 page — full-screen standalone ══════════════════════ */
+.nf-page {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, #0d0000 0%, #1a0000 45%, #2c0000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Centred content ── */
+.nf-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  max-width: 520px;
+  width: 100%;
+}
+
+/* ── Logo ── */
+.nf-logo {
+  display: inline-flex;
+  gap: 6px;
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  opacity: 0.9;
+  transition: opacity 0.15s;
+}
+
+.nf-logo:hover {
+  opacity: 1;
+}
+
+.nf-logo-unity {
+  color: #ffffff;
+}
+
+.nf-logo-foods {
+  color: #5BC8C0;
+}
+
+/* ── 404 number ── */
+.nf-code {
+  font-size: clamp(7rem, 22vw, 11rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -6px;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(91, 200, 192, 0.55);
+  background: linear-gradient(135deg, #5BC8C0 20%, #E8841A 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+  margin-bottom: 24px;
+}
+
+/* ── Heading ── */
+.nf-title {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+
+/* ── Sub-text ── */
+.nf-sub {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.75;
+  margin: 0 0 36px;
+}
+
+/* ── CTA button ── */
+.nf-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #E8841A;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 100px;
+  letter-spacing: 0.2px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(232, 132, 26, 0.4);
+  margin-bottom: 40px;
+}
+
+.nf-btn:hover {
+  background: #5BC8C0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(91, 200, 192, 0.45);
+}
+
+.nf-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Decorative helpful links ── */
+.nf-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.nf-links > span {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+}
+
+.nf-links nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nf-links nav a {
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.nf-links nav a:hover {
+  border-color: rgba(91, 200, 192, 0.6);
+  color: #ffffff;
+  background: rgba(91, 200, 192, 0.1);
+}
+
+/* ── Background decoration ── */
+.nf-bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.nf-bg-circle-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(232, 132, 26, 0.18) 0%, transparent 70%);
+  top: -200px;
+  right: -200px;
+}
+
+.nf-bg-circle-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(232, 132, 26, 0.12) 0%, transparent 70%);
+  bottom: -150px;
+  left: -100px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .nf-page {
+    padding: 32px 20px;
+  }
+
+  .nf-logo {
+    margin-bottom: 36px;
+  }
+
+  .nf-code {
+    letter-spacing: -3px;
+    margin-bottom: 20px;
+  }
+
+  .nf-btn {
+    width: 100%;
+    text-align: center;
+    padding: 14px 24px;
+  }
+}

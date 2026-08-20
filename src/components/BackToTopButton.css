@@ -1,0 +1,53 @@
+.btt-btn {
+  position: fixed;
+  /* sits above WhatsApp button: 28px bottom + 58px height + 12px gap */
+  bottom: 98px;
+  right: 28px;
+  z-index: 149;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #E8841A;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 14px rgba(232, 132, 26, 0.35);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease,
+              background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btt-btn.btt-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.btt-btn.btt-visible:hover {
+  background: #5BC8C0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(91, 200, 192, 0.45);
+}
+
+.btt-btn.btt-visible:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .btt-btn {
+    /* above mobile WhatsApp: 20px bottom + 52px height + 10px gap */
+    bottom: 82px;
+    right: 18px;
+    width: 40px;
+    height: 40px;
+  }
+}

@@ -1,0 +1,164 @@
+/* ══ Hero ═════════════════════════════════════════════════ */
+.tobacco-hero {
+  padding: 72px 0 48px;
+  background: linear-gradient(to bottom, #1a0000 0%, #3a0000 100%);
+}
+
+.tobacco-hero-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin: 8px 0 12px;
+}
+
+.tobacco-hero-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.65);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ══ Grid section ═════════════════════════════════════════ */
+.tobacco-grid-section {
+  padding: 56px 0 96px;
+}
+
+.tobacco-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+/* ══ Card ═════════════════════════════════════════════════ */
+.tobacco-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.tobacco-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.tobacco-card-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.tobacco-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.tobacco-card:hover .tobacco-card-image img {
+  transform: scale(1.04);
+}
+
+.tobacco-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  background: linear-gradient(135deg, #f0efec, #e4e3de);
+}
+
+.tobacco-card-body {
+  padding: 14px 16px 18px;
+}
+
+.tobacco-card-name {
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* ══ States ═══════════════════════════════════════════════ */
+.tobacco-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 96px 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.tobacco-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: tobacco-spin 0.8s linear infinite;
+}
+
+@keyframes tobacco-spin {
+  to { transform: rotate(360deg); }
+}
+
+.tobacco-empty {
+  text-align: center;
+  padding: 96px 0;
+}
+
+.tobacco-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.tobacco-empty-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.tobacco-empty-sub {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* ══ Responsive ═══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .tobacco-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .tobacco-hero {
+    padding: 56px 0 36px;
+  }
+
+  .tobacco-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .tobacco-grid-section {
+    padding: 40px 0 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tobacco-grid {
+    grid-template-columns: 1fr;
+  }
+}
