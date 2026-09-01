@@ -49,7 +49,10 @@ Deno.serve(async (req) => {
       )
     }
 
-    const fromField = 'Unity Foods <bookings@unityfoodsmn.com>'
+    // TODO: switch to 'Rice St Market <bookings@ricestmarket.com>' (or actual domain) once
+    // a domain is purchased and verified in Resend. onboarding@resend.dev is Resend's
+    // sandbox sender — it works without domain verification but has deliverability limits.
+    const fromField = 'Rice St Market <onboarding@resend.dev>'
     const subjectField = `New Product Inquiry — ${customer_name}`
     console.log('[notify-inquiry] Sending email — from:', fromField, '| to:', ownerEmail, '| subject:', subjectField)
 
@@ -120,9 +123,9 @@ function buildEmail(d: InquiryDetails): string {
     <tr><td align="center">
       <table width="100%" style="max-width:520px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.10);">
         <tr>
-          <td style="background:linear-gradient(135deg,#1a0000 0%,#3a0000 60%,#8B0000 100%);padding:36px 40px;text-align:center;">
+          <td style="background:linear-gradient(135deg,#1A1A1A 0%,#4a2f0f 55%,#E8841A 100%);padding:36px 40px;text-align:center;">
             <div style="font-size:22px;font-weight:900;color:#ffffff;text-transform:uppercase;letter-spacing:-0.5px;line-height:1;">
-              UNITY <span style="color:#CC0000;">FOODS</span>
+              RICE ST <span style="color:#5BC8C0;">MARKET</span>
             </div>
             <div style="color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-top:8px;">
               New Product Inquiry
@@ -140,14 +143,15 @@ function buildEmail(d: InquiryDetails): string {
             <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:28px;">
               ${row('Product',  d.product_name, true)}
               ${row('Customer', d.customer_name)}
-              ${row('Phone',    `<a href="tel:${d.customer_phone}" style="color:#8B0000;font-weight:600;text-decoration:none;">${d.customer_phone}</a>`)}
+              ${row('Phone',    `<a href="tel:${d.customer_phone}" style="color:#E8841A;font-weight:600;text-decoration:none;">${d.customer_phone}</a>`)}
               ${row('Message',  d.message)}
             </table>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center">
-                  <a href="https://unity-foods.vercel.app/admin/inquiries"
-                     style="display:inline-block;background:#8B0000;color:#ffffff;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.2px;">
+                  <!-- TODO: replace with the live Rice St Market domain once deployed, e.g. https://ricestmarket.vercel.app/admin/inquiries -->
+                  <a href="#todo-site-url"
+                     style="display:inline-block;background:#E8841A;color:#ffffff;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.2px;">
                     View All Inquiries →
                   </a>
                 </td>
@@ -158,8 +162,8 @@ function buildEmail(d: InquiryDetails): string {
         <tr>
           <td style="background:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb;text-align:center;">
             <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.7;">
-              Unity Foods &nbsp;·&nbsp; 3759 Chicago Ave #2, Minneapolis, MN 55407<br>
-              <a href="tel:+16128216444" style="color:#9ca3af;text-decoration:none;">(612) 821-6444</a>
+              Rice St Market &nbsp;·&nbsp; 1110 Rice St, St Paul, MN 55117<br>
+              <a href="tel:+16124597870" style="color:#9ca3af;text-decoration:none;">(612) 459-7870</a>
               &nbsp;·&nbsp; Open daily 8 AM – 10 PM
             </p>
           </td>
