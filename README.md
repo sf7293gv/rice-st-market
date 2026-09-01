@@ -2,7 +2,7 @@
 
 **Rice St Market Wireless & Deli** is a neighborhood grocery store, deli, electronics shop, and phone repair center located at 1110 Rice St, St Paul, MN 55117. Phone: (612) 459-7870.
 
-**Live site:** Not yet deployed — local clone/retheme in progress.
+**Live site:** [rice-st-market.vercel.app](https://rice-st-market.vercel.app)
 
 > This project is a clone of the **Unity Foods** codebase, retargeted for a second store (Rice St Market Wireless & Deli). Branding, colors, and store info are being updated for the new store; the underlying features and structure are unchanged. The Deployment, Supabase project, and Environment variables sections below still describe the original Unity Foods infrastructure and have intentionally not been touched — see the note at the end of this README.
 
