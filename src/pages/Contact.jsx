@@ -79,7 +79,7 @@ export default function Contact() {
                   <p>{STORE_ADDRESS}</p>
                   <p className="contact-neighborhood">Rice Street · North End</p>
                   <a
-                    href={`https://maps.google.com/?q=${encodeURIComponent(STORE_ADDRESS)}`}
+                    href="https://share.google/QRsXYOB2Vk9paScpO"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="contact-link"
@@ -150,7 +150,7 @@ export default function Contact() {
               <div className="map-wrapper">
                 <iframe
                   title={`${STORE_NAME} Location Map`}
-                  src={`https://maps.google.com/maps?q=${encodeURIComponent(STORE_ADDRESS)}&t=&z=16&ie=UTF8&iwloc=&output=embed`}
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2822.47987802069!2d-93.10828702337834!3d44.974561871070264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52b32bc4bb514c9b%3A0x2099419d81eb9777!2sRice%20street%20market%20%26%20wireless!5e0!3m2!1sen!2sus!4v1788870614372!5m2!1sen!2sus"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -162,7 +162,7 @@ export default function Contact() {
               <div className="map-footer">
                 <span>{STORE_ADDRESS}</span>
                 <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(STORE_ADDRESS)}`}
+                  href="https://share.google/QRsXYOB2Vk9paScpO"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-outline"
