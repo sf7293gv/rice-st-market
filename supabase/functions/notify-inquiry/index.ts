@@ -49,10 +49,7 @@ Deno.serve(async (req) => {
       )
     }
 
-    // TODO: switch to 'Rice St Market <bookings@ricestmarket.com>' (or actual domain) once
-    // a domain is purchased and verified in Resend. onboarding@resend.dev is Resend's
-    // sandbox sender — it works without domain verification but has deliverability limits.
-    const fromField = 'Rice St Market <onboarding@resend.dev>'
+    const fromField = 'Rice St Market <bookings@ricestreetmarket.com>'
     const subjectField = `New Product Inquiry — ${customer_name}`
     console.log('[notify-inquiry] Sending email — from:', fromField, '| to:', ownerEmail, '| subject:', subjectField)
 
