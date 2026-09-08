@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
 import './Footer.css'
 
 const NAV_LINKS = [
@@ -100,7 +100,11 @@ export default function Footer() {
               </li>
               <li>
                 <PhoneIcon />
-                <a href={STORE_PHONE_TEL}>{STORE_PHONE}</a>
+                <span>
+                  <a href={STORE_PHONE_TEL}>{STORE_PHONE}</a>
+                  {' · '}
+                  <a href={STORE_PHONE_2_TEL}>{STORE_PHONE_2}</a>
+                </span>
               </li>
             </ul>
           </div>

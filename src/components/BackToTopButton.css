@@ -33,9 +33,9 @@
 }
 
 .btt-btn.btt-visible:hover {
-  background: #5BC8C0;
+  background: #ef9c44;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(91, 200, 192, 0.45);
+  box-shadow: 0 6px 20px rgba(232, 132, 26, 0.45);
 }
 
 .btt-btn.btt-visible:active {

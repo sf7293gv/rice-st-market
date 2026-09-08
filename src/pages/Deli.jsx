@@ -1,17 +1,28 @@
-// Menu page — fetches active menu items from Supabase and renders a filterable grid by category.
+// Deli page — fetches active items in the Deli/Hot Food categories and renders a
+// filterable grid. Based on the former Menu.jsx's fetch/render logic, scoped down to
+// this page's own category subset (no "All" — clicking the active filter again clears
+// it back to showing both categories combined).
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
 import { STORE_NAME } from '../lib/siteConfig'
-import './Menu.css'
+import './Deli.css'
 
-const CATEGORIES = ['All', 'Deli', 'Hot Food', 'Groceries', 'Drinks', 'Snacks']
+const CATEGORIES = ['Deli', 'Hot Food']
 
-export default function Menu() {
+export default function Deli() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const categoryParam = searchParams.get('category')
+  const activeCategory = CATEGORIES.includes(categoryParam) ? categoryParam : null
+
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
-  const [activeCategory, setActiveCategory] = useState('All')
+
+  function selectCategory(cat) {
+    setSearchParams(cat === activeCategory ? {} : { category: cat })
+  }
 
   const headerRef = useFadeIn()
   const gridRef = useFadeIn()
@@ -23,50 +34,50 @@ export default function Menu() {
         .select('*')
         .order('name')
       if (data) setItems(data)
-      if (error) console.error('Error fetching menu items:', error)
+      if (error) console.error('Error fetching deli items:', error)
       setLoading(false)
     }
     fetchItems()
   }, [])
 
-  const filtered =
-    activeCategory === 'All'
-      ? items
-      : items.filter(item => item.category === activeCategory)
+  const inScope = items.filter(item => CATEGORIES.includes(item.category))
+  const filtered = activeCategory
+    ? inScope.filter(item => item.category === activeCategory)
+    : inScope
 
   return (
-    <div className="menu-page">
+    <div className="deli-page">
       <Helmet>
-        <title>Menu — {STORE_NAME} | St. Paul, MN</title>
-        <meta name="description" content={`Browse our fresh deli and grocery menu at ${STORE_NAME} in St. Paul.`} />
-        <meta property="og:title" content={`Menu — ${STORE_NAME} | St. Paul, MN`} />
-        <meta property="og:description" content={`Browse our fresh deli and grocery menu at ${STORE_NAME} in St. Paul.`} />
+        <title>Deli — {STORE_NAME} | St. Paul, MN</title>
+        <meta name="description" content={`Browse our fresh deli sandwiches and hot food menu at ${STORE_NAME} in St. Paul.`} />
+        <meta property="og:title" content={`Deli — ${STORE_NAME} | St. Paul, MN`} />
+        <meta property="og:description" content={`Browse our fresh deli sandwiches and hot food menu at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/menu" />
+        <meta property="og:url" content="https://unity-foods.vercel.app/deli" />
       </Helmet>
 
       {/* ── Page header ── */}
-      <div className="menu-header-section">
+      <div className="deli-header-section">
         <div className="container">
           <div className="fade-up" ref={headerRef}>
             <span className="section-eyebrow">Our Selection</span>
-            <h1 className="menu-page-title">Menu & Grocery</h1>
-            <p className="menu-page-subtitle">
-              Fresh deli, hot food, groceries, drinks, and snacks — everything you need, right in your neighborhood.
+            <h1 className="deli-page-title">Deli</h1>
+            <p className="deli-page-subtitle">
+              Fresh-made deli sandwiches and hot food — everything you need, right in your neighborhood.
             </p>
           </div>
         </div>
       </div>
 
       {/* ── Filters ── */}
-      <div className="menu-filters-bar">
+      <div className="deli-filters-bar">
         <div className="container">
-          <div className="menu-filters">
+          <div className="deli-filters">
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
                 className={`filter-btn${activeCategory === cat ? ' active' : ''}`}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => selectCategory(cat)}
               >
                 {cat}
               </button>
@@ -76,20 +87,20 @@ export default function Menu() {
       </div>
 
       {/* ── Grid ── */}
-      <section className="menu-grid-section">
+      <section className="deli-grid-section">
         <div className="container">
           {loading ? (
-            <div className="menu-loading">
-              <div className="loading-spinner" aria-label="Loading menu items" />
-              <p>Loading menu…</p>
+            <div className="deli-loading">
+              <div className="loading-spinner" aria-label="Loading deli items" />
+              <p>Loading deli…</p>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="menu-empty">
-              <p className="empty-icon" aria-hidden="true">🛒</p>
+            <div className="deli-empty">
+              <p className="empty-icon" aria-hidden="true">🥪</p>
               <p className="empty-title">
-                {activeCategory === 'All'
-                  ? 'No items yet'
-                  : `No items in ${activeCategory}`}
+                {activeCategory
+                  ? `No items in ${activeCategory}`
+                  : 'No items yet'}
               </p>
               <p className="empty-sub">Check back soon or ask us in store.</p>
             </div>

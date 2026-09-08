@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE } from '../../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_2 } from '../../lib/siteConfig'
 import Toast from './Toast'
 
 const PHONE_EXAMPLE_DIGITS = `1${STORE_PHONE.replace(/\D/g, '')}`
@@ -223,7 +223,7 @@ export default function AdminSettings() {
         </div>
         <div className="adm-info-row">
           <span className="lbl">Phone</span>
-          <span className="val">{STORE_PHONE}</span>
+          <span className="val">{STORE_PHONE} · {STORE_PHONE_2}</span>
         </div>
         <div className="adm-info-row">
           <span className="lbl">Hours</span>

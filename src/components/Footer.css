@@ -65,6 +65,12 @@
   flex-shrink: 0;
   margin-top: 2px;
   opacity: 0.45;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.footer-col ul li:hover svg {
+  color: var(--primary);
+  opacity: 1;
 }
 
 .footer-col ul li a {
@@ -139,8 +145,8 @@
 }
 
 .footer-social-link:hover {
-  background: rgba(91, 200, 192, 0.2);
-  border-color: rgba(91, 200, 192, 0.5);
+  background: rgba(232, 132, 26, 0.25);
+  border-color: rgba(232, 132, 26, 0.55);
   color: #ffffff;
   transform: translateY(-2px);
 }

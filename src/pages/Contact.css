@@ -43,12 +43,13 @@
   display: flex;
   gap: 18px;
   align-items: flex-start;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
 .contact-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 24px rgba(232,132,26,0.18);
+  border-color: var(--primary);
 }
 
 .contact-card-icon {

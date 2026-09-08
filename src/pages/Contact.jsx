@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
 import './Contact.css'
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -139,6 +139,7 @@ export default function Contact() {
                 <div>
                   <h3>Phone</h3>
                   <a href={STORE_PHONE_TEL} className="contact-phone">{STORE_PHONE}</a>
+                  <a href={STORE_PHONE_2_TEL} className="contact-phone">{STORE_PHONE_2}</a>
                   <p>Call us anytime during store hours</p>
                 </div>
               </div>

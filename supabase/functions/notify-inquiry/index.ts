@@ -164,6 +164,8 @@ function buildEmail(d: InquiryDetails): string {
             <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.7;">
               Rice St Market &nbsp;·&nbsp; 1110 Rice St, St Paul, MN 55117<br>
               <a href="tel:+16124597870" style="color:#9ca3af;text-decoration:none;">(612) 459-7870</a>
+              &nbsp;·&nbsp;
+              <a href="tel:+16125012004" style="color:#9ca3af;text-decoration:none;">(612) 501-2004</a>
               &nbsp;·&nbsp; Open daily 8 AM – 10 PM
             </p>
           </td>

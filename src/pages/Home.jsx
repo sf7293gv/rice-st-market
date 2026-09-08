@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
 import './Home.css'
 
 const DAYS_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -78,7 +78,8 @@ export default function Home() {
             Your neighborhood store on Rice Street
           </p>
           <div className="hero-cta fade-up is-visible" style={{ transitionDelay: '0.3s' }}>
-            <Link to="/menu" className="btn-primary">Explore Our Menu</Link>
+            <Link to="/electronics" className="btn-primary">Explore Devices</Link>
+            <Link to="/repairs" className="btn-primary">Explore Our Services</Link>
             <Link to="/contact" className="btn-outline-white">Get Directions</Link>
           </div>
           <div className="hero-badge fade-up is-visible" style={{ transitionDelay: '0.4s' }}>
@@ -126,7 +127,7 @@ export default function Home() {
               <WrenchIcon />
             </div>
             <div className="repair-cta-text">
-              <h2 className="repair-cta-title">Phone broken? We fix it.</h2>
+              <h2 className="repair-cta-title">Device broken? We fix it!</h2>
               <p className="repair-cta-sub">
                 Fast turnaround · Fair prices · Book online in 60&nbsp;seconds
               </p>
@@ -224,6 +225,8 @@ export default function Home() {
               <h3>Phone</h3>
               <p className="info-primary">
                 <a href={STORE_PHONE_TEL}>{STORE_PHONE}</a>
+                {' · '}
+                <a href={STORE_PHONE_2_TEL}>{STORE_PHONE_2}</a>
               </p>
               <p className="info-secondary">Call us anytime during hours</p>
             </div>

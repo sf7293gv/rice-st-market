@@ -32,12 +32,13 @@
   border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
   overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .repair-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 24px rgba(232,132,26,0.18);
+  border-color: var(--primary);
 }
 
 .repair-card-img {

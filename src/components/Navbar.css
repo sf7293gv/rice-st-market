@@ -62,8 +62,8 @@
 }
 
 .navbar-links a.active {
-  color: var(--accent);
-  background: rgba(91, 200, 192, 0.14);
+  color: var(--primary);
+  background: rgba(232, 132, 26, 0.14);
 }
 
 /* Hamburger */
@@ -163,6 +163,6 @@
   .navbar-links a:hover,
   .navbar-links a.active {
     color: var(--white);
-    background: rgba(91, 200, 192, 0.18);
+    background: rgba(232, 132, 26, 0.22);
   }
 }

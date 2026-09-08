@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
 import './Repairs.css'
 
 const JS_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -237,12 +237,18 @@ export default function Repairs() {
               <h2 className="section-title">Talk to Us Directly</h2>
               <p>Drop in during store hours or call us to check availability and get a quick quote. We're at {STORE_ADDRESS.split(',')[0]}, open every day.</p>
             </div>
-            <div className="repairs-cta-action">
+            <div className="repairs-cta-action" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
               <a href={STORE_PHONE_TEL} className="btn-primary repairs-call-btn">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.62 3.38 2 2 0 013.6 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
                 </svg>
                 {STORE_PHONE}
+              </a>
+              <a href={STORE_PHONE_2_TEL} className="btn-primary repairs-call-btn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.62 3.38 2 2 0 013.6 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                {STORE_PHONE_2}
               </a>
             </div>
           </div>
@@ -354,7 +360,7 @@ function BookingForm({ services, hours, ownerPhone }) {
     })
 
     if (error) {
-      setSubmitError(`Something went wrong. Please call us at ${STORE_PHONE}.`)
+      setSubmitError(`Something went wrong. Please call us at ${STORE_PHONE} or ${STORE_PHONE_2}.`)
       setSubmitting(false)
       return
     }
@@ -450,7 +456,7 @@ function BookingForm({ services, hours, ownerPhone }) {
           </label>
           {services.length === 0 ? (
             <p className="booking-no-services">
-              No services listed yet — call us at <a href={STORE_PHONE_TEL}>{STORE_PHONE}</a> for a quote.
+              No services listed yet — call us at <a href={STORE_PHONE_TEL}>{STORE_PHONE}</a> or <a href={STORE_PHONE_2_TEL}>{STORE_PHONE_2}</a> for a quote.
             </p>
           ) : (
             <select

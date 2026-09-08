@@ -91,7 +91,7 @@ button {
   font-weight: 700;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--primary);
   margin-bottom: 10px;
 }
 
@@ -117,7 +117,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--accent);
+  background: var(--primary);
   color: var(--white);
   padding: 12px 28px;
   min-height: 44px;
@@ -130,7 +130,7 @@ button {
 }
 
 .btn-primary:hover {
-  background: var(--accent-hover);
+  background: var(--primary-light);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(232,132,26,0.3);
 }

@@ -1,15 +1,17 @@
 // Root router — declares all public and admin routes; admin subtree is guarded by ProtectedRoute.
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
 import Home from './pages/Home'
-import Menu from './pages/Menu'
+import Grocery from './pages/Grocery'
+import Deli from './pages/Deli'
 import Services from './pages/Services'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Repairs from './pages/Repairs'
 import Electronics from './pages/Electronics'
+import Accessories from './pages/Accessories'
 import Tobacco from './pages/Tobacco'
 import NotFound from './pages/NotFound'
 
@@ -36,12 +38,17 @@ export default function App() {
         {/* Public site */}
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
+          <Route path="/grocery" element={<Grocery />} />
+          <Route path="/deli" element={<Deli />} />
+          {/* /menu was split into /grocery and /deli — kept as a redirect since
+              Footer.jsx, About.jsx, and NotFound.jsx still link to /menu directly. */}
+          <Route path="/menu" element={<Navigate to="/grocery" replace />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/repairs" element={<Repairs />} />
           <Route path="/electronics" element={<Electronics />} />
+          <Route path="/accessories" element={<Accessories />} />
           <Route path="/tobacco" element={<Tobacco />} />
         </Route>
 
