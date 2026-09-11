@@ -10,11 +10,15 @@ import './Electronics.css'
 const DEFAULT_MSG = (name) => `I'm interested in ${name}, is it available?`
 
 const CATEGORIES = [
-  { value: 'all',         label: 'All' },
-  { value: 'phones',      label: 'Phones' },
-  { value: 'electronics', label: 'Electronics' },
-  { value: 'accessories', label: 'Accessories' },
+  { value: 'all',     label: 'All' },
+  { value: 'phones',  label: 'Phones' },
+  { value: 'laptops', label: 'Laptops' },
+  { value: 'pcs',     label: 'PCs' },
 ]
+
+function categoryLabel(value) {
+  return CATEGORIES.find(c => c.value === value)?.label ?? value
+}
 
 export default function Electronics() {
   const [products, setProducts] = useState([])
@@ -34,6 +38,7 @@ export default function Electronics() {
         .from('products')
         .select('*')
         .eq('active', true)
+        .in('category', ['phones', 'laptops', 'pcs'])
         .order('created_at', { ascending: false })
       if (data) setProducts(data)
       if (error) console.error('products fetch error:', error)
@@ -143,7 +148,7 @@ function ProductCard({ product, onInquire }) {
         </div>
         {product.category && (
           <span className="product-category-tag">
-            {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+            {categoryLabel(product.category)}
           </span>
         )}
       </div>

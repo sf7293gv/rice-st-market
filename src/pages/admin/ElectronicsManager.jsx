@@ -8,7 +8,8 @@ import Toast from './Toast'
 
 const CATEGORIES = [
   { value: 'phones',      label: 'Phones' },
-  { value: 'electronics', label: 'Electronics' },
+  { value: 'laptops',     label: 'Laptops' },
+  { value: 'pcs',         label: 'PCs' },
   { value: 'accessories', label: 'Accessories' },
 ]
 
