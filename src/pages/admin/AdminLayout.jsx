@@ -26,6 +26,7 @@ const NAV = [
     label: 'Electronics',
     links: [
       { to: '/admin/electronics', label: 'Electronics', icon: <ShopIcon /> },
+      { to: '/admin/plans',       label: 'Plans',        icon: <SignalIcon /> },
       { to: '/admin/inquiries',   label: 'Inquiries',   icon: <InboxIcon /> },
     ],
   },
@@ -58,6 +59,7 @@ const PAGE_TITLES = {
   '/admin/announcements':  'Announcements',
   '/admin/hours':          'Store Hours',
   '/admin/electronics':    'Electronics',
+  '/admin/plans':          'Plans',
   '/admin/inquiries':      'Inquiries',
   '/admin/tobacco':        'Tobacco',
   '/admin/repairs':        'Repair Services',
@@ -218,6 +220,18 @@ function ShopIcon() {
       <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
       <line x1="3" y1="6" x2="21" y2="6"/>
       <path d="M16 10a4 4 0 01-8 0"/>
+    </svg>
+  )
+}
+
+function SignalIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="2" y1="20" x2="2" y2="20"/>
+      <line x1="6" y1="16" x2="6" y2="20"/>
+      <line x1="10" y1="12" x2="10" y2="20"/>
+      <line x1="14" y1="8" x2="14" y2="20"/>
+      <line x1="18" y1="4" x2="18" y2="20"/>
     </svg>
   )
 }

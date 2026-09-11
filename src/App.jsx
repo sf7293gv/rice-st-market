@@ -12,6 +12,7 @@ import Contact from './pages/Contact'
 import Repairs from './pages/Repairs'
 import Electronics from './pages/Electronics'
 import Accessories from './pages/Accessories'
+import Plans from './pages/Plans'
 import Tobacco from './pages/Tobacco'
 import NotFound from './pages/NotFound'
 
@@ -23,6 +24,7 @@ import SpecialsManager from './pages/admin/SpecialsManager'
 import AnnouncementsManager from './pages/admin/AnnouncementsManager'
 import HoursManager from './pages/admin/HoursManager'
 import ElectronicsManager from './pages/admin/ElectronicsManager'
+import PlansManager from './pages/admin/PlansManager'
 import InquiriesManager from './pages/admin/InquiriesManager'
 import RepairsManager from './pages/admin/RepairsManager'
 import RepairMediaManager from './pages/admin/RepairMediaManager'
@@ -49,6 +51,7 @@ export default function App() {
           <Route path="/repairs" element={<Repairs />} />
           <Route path="/electronics" element={<Electronics />} />
           <Route path="/accessories" element={<Accessories />} />
+          <Route path="/plans" element={<Plans />} />
           <Route path="/tobacco" element={<Tobacco />} />
         </Route>
 
@@ -70,6 +73,7 @@ export default function App() {
           <Route path="announcements" element={<AnnouncementsManager />} />
           <Route path="hours" element={<HoursManager />} />
           <Route path="electronics" element={<ElectronicsManager />} />
+          <Route path="plans" element={<PlansManager />} />
           <Route path="inquiries" element={<InquiriesManager />} />
           <Route path="repairs" element={<RepairsManager />} />
           <Route path="repair-media" element={<RepairMediaManager />} />

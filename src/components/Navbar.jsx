@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { to: '/repairs', label: 'Repairs' },
   { to: '/electronics', label: 'Electronics' },
   { to: '/accessories', label: 'Accessories' },
+  { to: '/plans', label: 'Plans' },
   ...(SHOW_TOBACCO_PAGE ? [{ to: '/tobacco', label: 'Tobacco' }] : []),
   { to: '/grocery', label: 'Grocery' },
   { to: '/deli', label: 'Deli' },
