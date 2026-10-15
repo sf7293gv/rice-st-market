@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
+import { DAYS_ORDER, DEFAULT_HOURS, DEFAULT_OPEN, DEFAULT_CLOSE, storeTodayName } from '../lib/hours'
 import './About.css'
 
-const DAYS_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 function fmtTime(t) {
   if (!t) return ''
@@ -57,11 +57,11 @@ export default function About() {
     })
   }, [])
 
-  const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' })
+  const todayName = storeTodayName()
   const orderedHours = DAYS_ORDER.map(d => hours.find(h => h.day === d)).filter(Boolean)
   const displayHours = orderedHours.length === 7
     ? orderedHours
-    : DAYS_ORDER.map(d => ({ day: d, open_time: '08:00', close_time: '22:00', is_closed: false }))
+    : DEFAULT_HOURS
   const todayRow = orderedHours.find(h => h.day === todayName)
 
   const heroRef = useFadeIn()
@@ -79,7 +79,7 @@ export default function About() {
         <meta property="og:title" content={`About Us — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Learn about ${STORE_NAME} — a community store in St. Paul, MN.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/about" />
+        <meta property="og:url" content={`${SITE_URL}/about`} />
       </Helmet>
 
       {/* ── Hero ── */}
@@ -116,15 +116,15 @@ export default function About() {
               <div className="story-card">
                 <div className="story-stat">
                   <span className="story-number">
-                    {todayRow && !todayRow.is_closed ? shortTime(todayRow.open_time) : '8AM'}
+                    {todayRow && !todayRow.is_closed ? shortTime(todayRow.open_time) : shortTime(DEFAULT_OPEN)}
                   </span>
-                  <span className="story-label">Open every morning</span>
+                  <span className="story-label">Open every day</span>
                 </div>
               </div>
               <div className="story-card accent">
                 <div className="story-stat">
                   <span className="story-number">
-                    {todayRow && !todayRow.is_closed ? shortTime(todayRow.close_time) : '10PM'}
+                    {todayRow && !todayRow.is_closed ? shortTime(todayRow.close_time) : shortTime(DEFAULT_CLOSE)}
                   </span>
                   <span className="story-label">Close every night</span>
                 </div>

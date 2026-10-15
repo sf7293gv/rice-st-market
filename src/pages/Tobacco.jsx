@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_ADDRESS } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, SITE_URL } from '../lib/siteConfig'
 import './Tobacco.css'
 
 export default function Tobacco() {
@@ -33,7 +33,7 @@ export default function Tobacco() {
         <meta property="og:title" content={`Tobacco — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Browse our tobacco selection at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/tobacco" />
+        <meta property="og:url" content={`${SITE_URL}/tobacco`} />
       </Helmet>
 
       {/* ── Hero ── */}

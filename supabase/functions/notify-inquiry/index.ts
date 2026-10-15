@@ -163,7 +163,7 @@ function buildEmail(d: InquiryDetails): string {
               <a href="tel:+16124597870" style="color:#9ca3af;text-decoration:none;">(612) 459-7870</a>
               &nbsp;·&nbsp;
               <a href="tel:+16125012004" style="color:#9ca3af;text-decoration:none;">(612) 501-2004</a>
-              &nbsp;·&nbsp; Open daily 8 AM – 10 PM
+              &nbsp;·&nbsp; Open daily 12 PM – 9 PM
             </p>
           </td>
         </tr>

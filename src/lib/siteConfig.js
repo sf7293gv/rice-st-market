@@ -3,6 +3,9 @@
 // this file was added to hold the Tobacco page toggle and store info.
 export const SHOW_TOBACCO_PAGE = false
 
+// Canonical public URL, used for og:url tags.
+export const SITE_URL = "https://www.ricestreetmarket.com"
+
 export const STORE_NAME = "Rice St Market Wireless & Deli"
 export const STORE_NAME_SHORT = "Rice St Market"
 export const STORE_INITIALS = "RSM"

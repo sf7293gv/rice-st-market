@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
+import { DEFAULT_OPEN, DEFAULT_CLOSE } from '../lib/hours'
 import './Contact.css'
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -43,7 +44,7 @@ export default function Contact() {
         <meta property="og:title" content={`Contact — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Contact ${STORE_NAME} — located at ${STORE_ADDRESS}. Call, visit, or send a message.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/contact" />
+        <meta property="og:url" content={`${SITE_URL}/contact`} />
       </Helmet>
 
       {/* ── Header ── */}
@@ -102,7 +103,7 @@ export default function Contact() {
                     <>
                       <div className="hours-table">
                         <span>Every Day</span>
-                        <span className="hours-time">8:00 AM – 10:00 PM</span>
+                        <span className="hours-time">{fmtTime(DEFAULT_OPEN)} – {fmtTime(DEFAULT_CLOSE)}</span>
                       </div>
                       <p className="hours-note">Open 365 days a year</p>
                     </>

@@ -1,8 +1,10 @@
-// Site footer — fetches social media URLs from the settings table so the admin can update them without a redeploy.
+// Site footer — fetches social media URLs from the settings table and store hours from the hours table,
+// so the admin can update both without a redeploy.
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
+import { DEFAULT_OPEN, DEFAULT_CLOSE, fmtTime } from '../lib/hours'
 import './Footer.css'
 
 const NAV_LINKS = [
@@ -18,6 +20,7 @@ const NAV_LINKS = [
 export default function Footer() {
   const year = new Date().getFullYear()
   const [social, setSocial] = useState({ facebook: '', instagram: '', tiktok: '' })
+  const [hours, setHours] = useState([])
 
   useEffect(() => {
     supabase
@@ -33,7 +36,18 @@ export default function Footer() {
           tiktok:    get('tiktok_url'),
         })
       })
+    supabase.from('hours').select('*').then(({ data }) => {
+      if (data) setHours(data)
+    })
   }, [])
+
+  // Same open/close every day → show one range; otherwise point to the full schedule.
+  const openRows = hours.filter(h => !h.is_closed)
+  const allSame = hours.length === 7 && openRows.length === 7
+    && openRows.every(h => h.open_time === openRows[0].open_time && h.close_time === openRows[0].close_time)
+  const hoursLabel = hours.length === 0
+    ? `${fmtTime(DEFAULT_OPEN)} – ${fmtTime(DEFAULT_CLOSE)}`
+    : allSame ? `${fmtTime(openRows[0].open_time)} – ${fmtTime(openRows[0].close_time)}` : null
 
   const hasSocial = social.facebook || social.instagram || social.tiktok
 
@@ -115,7 +129,9 @@ export default function Footer() {
             <ul>
               <li>
                 <ClockIcon />
-                <span>Open Every Day<br /><strong>8:00 AM – 10:00 PM</strong></span>
+                {hoursLabel
+                  ? <span>Open Every Day<br /><strong>{hoursLabel}</strong></span>
+                  : <span>Hours vary by day<br /><Link to="/contact">See full schedule</Link></span>}
               </li>
             </ul>
           </div>

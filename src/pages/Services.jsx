@@ -1,7 +1,7 @@
 // Services overview page — static content listing all service categories offered by the store.
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
 import './Services.css'
 
 const SERVICES = [
@@ -56,7 +56,7 @@ export default function Services() {
         <meta property="og:title" content={`Services — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Services offered at ${STORE_NAME} — grocery, deli, electronics, and repairs.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/services" />
+        <meta property="og:url" content={`${SITE_URL}/services`} />
       </Helmet>
 
 
@@ -106,7 +106,7 @@ export default function Services() {
         <div className="container">
           <div className="services-cta fade-up" ref={ctaRef}>
             <h2>Have a Question About Our Services?</h2>
-            <p>Stop by the store or give us a call — we're open every day from 8 AM to 10 PM.</p>
+            <p>Stop by the store or give us a call — we're open every day from 12 PM to 9 PM.</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px' }}>
               <a href={STORE_PHONE_TEL} className="btn-primary">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

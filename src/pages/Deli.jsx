@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME } from '../lib/siteConfig'
+import { STORE_NAME, SITE_URL } from '../lib/siteConfig'
 import './Deli.css'
 
 const CATEGORIES = ['Deli', 'Hot Food']
@@ -53,7 +53,7 @@ export default function Deli() {
         <meta property="og:title" content={`Deli — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Browse our fresh deli sandwiches and hot food menu at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/deli" />
+        <meta property="og:url" content={`${SITE_URL}/deli`} />
       </Helmet>
 
       {/* ── Page header ── */}

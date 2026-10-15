@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
+import { DAYS_ORDER, DEFAULT_HOURS, DEFAULT_OPEN, DEFAULT_CLOSE, storeTodayName, storeStatus } from '../lib/hours'
 import './Home.css'
 
-const DAYS_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 function fmtTime(t) {
   if (!t) return ''
@@ -22,6 +22,7 @@ export default function Home() {
   const [announcements, setAnnouncements] = useState([])
   const [specials, setSpecials] = useState([])
   const [hours, setHours] = useState([])
+  const [now, setNow] = useState(() => new Date())
 
   const heroRef = useFadeIn()
   const announcementsRef = useFadeIn()
@@ -45,15 +46,22 @@ export default function Home() {
     fetchData()
   }, [])
 
-  const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' })
+  // Re-evaluate the open/closed badge every minute.
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60_000)
+    return () => clearInterval(id)
+  }, [])
+
+  const todayName = storeTodayName()
   const orderedHours = DAYS_ORDER.map(d => hours.find(h => h.day === d)).filter(Boolean)
   const displayHours = orderedHours.length === 7
     ? orderedHours
-    : DAYS_ORDER.map(d => ({ day: d, open_time: '08:00', close_time: '22:00', is_closed: false }))
+    : DEFAULT_HOURS
   const allSame = orderedHours.length === 7
     && orderedHours.every(h => !h.is_closed)
     && orderedHours.every(h => h.open_time === orderedHours[0].open_time && h.close_time === orderedHours[0].close_time)
   const todayRow = orderedHours.find(h => h.day === todayName)
+  const status = storeStatus(displayHours, now)
 
   return (
     <div className="home">
@@ -63,7 +71,7 @@ export default function Home() {
         <meta property="og:title" content={`${STORE_NAME} — Grocery, Deli & Electronics | St. Paul, MN`} />
         <meta property="og:description" content="Your neighborhood grocery, deli, electronics, and phone repair shop in St. Paul, MN." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/" />
+        <meta property="og:url" content={`${SITE_URL}/`} />
       </Helmet>
 
       {/* ── Hero ── */}
@@ -82,16 +90,11 @@ export default function Home() {
             <Link to="/repairs" className="btn-primary">Explore Our Services</Link>
             <Link to="/contact" className="btn-outline-white">Get Directions</Link>
           </div>
-          <div className="hero-badge fade-up is-visible" style={{ transitionDelay: '0.4s' }}>
+          <div className={`hero-badge fade-up is-visible${status.isOpen ? '' : ' is-closed'}`} style={{ transitionDelay: '0.4s' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <circle cx="12" cy="12" r="10"/>
             </svg>
-            {todayRow?.is_closed
-              ? 'Closed Today'
-              : todayRow
-                ? `Open Today · ${fmtTime(todayRow.open_time)} – ${fmtTime(todayRow.close_time)}`
-                : 'Open Today · 8:00 AM – 10:00 PM'
-            }
+            {status.label}
           </div>
         </div>
       </section>
@@ -197,7 +200,7 @@ export default function Home() {
               <p className="info-primary">
                 {allSame
                   ? `${fmtTime(orderedHours[0].open_time)} – ${fmtTime(orderedHours[0].close_time)}`
-                  : orderedHours.length > 0 ? 'Hours vary by day' : '8:00 AM – 10:00 PM'
+                  : orderedHours.length > 0 ? 'Hours vary by day' : `${fmtTime(DEFAULT_OPEN)} – ${fmtTime(DEFAULT_CLOSE)}`
                 }
               </p>
               <p className="info-secondary">
@@ -300,7 +303,7 @@ export default function Home() {
                   <span className="stat-number">
                     {todayRow && !todayRow.is_closed && todayRow.open_time && todayRow.close_time
                       ? `${parseInt(todayRow.close_time) - parseInt(todayRow.open_time)}+`
-                      : '14+'}
+                      : `${parseInt(DEFAULT_CLOSE) - parseInt(DEFAULT_OPEN)}+`}
                   </span>
                   <span className="stat-label">Hours Daily</span>
                 </div>

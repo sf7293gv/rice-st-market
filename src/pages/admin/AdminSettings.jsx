@@ -227,7 +227,7 @@ export default function AdminSettings() {
         </div>
         <div className="adm-info-row">
           <span className="lbl">Hours</span>
-          <span className="val">8:00 AM – 10:00 PM, every day</span>
+          <span className="val">12:00 PM – 9:00 PM, every day</span>
         </div>
       </div>
 

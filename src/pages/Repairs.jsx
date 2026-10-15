@@ -1,19 +1,18 @@
 // Repairs page — lists active repair services, a before/after media gallery, and a booking form.
-// Time slots are fixed 1:00 PM–9:45 PM in 15-min intervals; closed days return no slots.
+// Time slots run from the day's open_time to 15 min before close_time (hours table), in 15-min
+// intervals; closed days return no slots, and slots already past are hidden for today.
+// "Today" uses the store's timezone (America/Chicago).
 // The #booking hash scrolls to the form with an 80ms delay so Layout's scroll-to-top resolves first.
 import { useState, useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
+import { storeDateStr, storeNowMins, toMins } from '../lib/hours'
 import './Repairs.css'
 
 const JS_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
-function toLocalDateStr(d) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
 
 function fmt12h(t) {
   if (!t) return ''
@@ -28,8 +27,9 @@ function getTimeSlotsForDate(dateStr, hours) {
   const dayName = JS_DAY_NAMES[new Date(y, mo - 1, d).getDay()]
   const dayRow = hours.find(h => h.day === dayName)
   if (!dayRow || dayRow.is_closed) return []
+  const earliest = dateStr === storeDateStr() ? storeNowMins() + 1 : 0
   const slots = []
-  for (let mins = 13 * 60; mins <= 21 * 60 + 45; mins += 15) {
+  for (let mins = Math.max(toMins(dayRow.open_time), Math.ceil(earliest / 15) * 15); mins <= toMins(dayRow.close_time) - 15; mins += 15) {
     const h = Math.floor(mins / 60)
     const m = mins % 60
     slots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`)
@@ -112,7 +112,7 @@ export default function Repairs() {
         <meta property="og:title" content={`Phone Repair Services — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Phone and electronics repair services in St. Paul — book an appointment online at ${STORE_NAME}.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/repairs" />
+        <meta property="og:url" content={`${SITE_URL}/repairs`} />
       </Helmet>
 
       {/* ── Hero ── */}
@@ -296,9 +296,9 @@ export default function Repairs() {
 const EMPTY_FORM = { serviceId: '', serviceName: '', date: '', time: '', name: '', phone: '', notes: '' }
 
 function BookingForm({ services, hours, ownerPhone }) {
-  const today = toLocalDateStr(new Date())
+  const today = storeDateStr()
   const maxD = new Date(); maxD.setDate(maxD.getDate() + 90)
-  const maxDate = toLocalDateStr(maxD)
+  const maxDate = storeDateStr(maxD)
 
   const [form, setForm]       = useState(EMPTY_FORM)
   const [errors, setErrors]   = useState({})
@@ -509,7 +509,9 @@ function BookingForm({ services, hours, ownerPhone }) {
               onChange={e => set('time', e.target.value)}
               disabled={!form.date || timeSlots.length === 0}
             >
-              <option value="">{form.date ? 'Select a time…' : 'Pick a date first'}</option>
+              <option value="">
+                {!form.date ? 'Pick a date first' : timeSlots.length ? 'Select a time…' : 'No times left today — pick another day'}
+              </option>
               {timeSlots.map(slot => (
                 <option key={slot} value={slot}>{fmt12h(slot)}</option>
               ))}

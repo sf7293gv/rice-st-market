@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME } from '../lib/siteConfig'
+import { STORE_NAME, SITE_URL } from '../lib/siteConfig'
 import './Electronics.css'
 
 const DEFAULT_MSG = (name) => `I'm interested in ${name}, is it available?`
@@ -60,7 +60,7 @@ export default function Electronics() {
         <meta property="og:title" content={`Electronics & Phones — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Shop new and used phones, electronics, and accessories at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/electronics" />
+        <meta property="og:url" content={`${SITE_URL}/electronics`} />
       </Helmet>
 
       {/* ── Hero ── */}

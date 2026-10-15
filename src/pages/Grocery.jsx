@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME } from '../lib/siteConfig'
+import { STORE_NAME, SITE_URL } from '../lib/siteConfig'
 import './Grocery.css'
 
 const CATEGORIES = ['Groceries', 'Drinks', 'Snacks']
@@ -53,7 +53,7 @@ export default function Grocery() {
         <meta property="og:title" content={`Grocery — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Browse our grocery selection — pantry staples, drinks, and snacks — at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unity-foods.vercel.app/grocery" />
+        <meta property="og:url" content={`${SITE_URL}/grocery`} />
       </Helmet>
 
       {/* ── Page header ── */}

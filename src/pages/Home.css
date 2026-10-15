@@ -88,6 +88,11 @@
   animation: pulse 2s ease-in-out infinite;
 }
 
+.hero-badge.is-closed svg {
+  color: #f87171;
+  animation: none;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
