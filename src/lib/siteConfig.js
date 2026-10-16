@@ -10,6 +10,14 @@ export const STORE_NAME = "Rice St Market Wireless & Deli"
 export const STORE_NAME_SHORT = "Rice St Market"
 export const STORE_INITIALS = "RSM"
 export const STORE_ADDRESS = "1110 Rice St, St Paul, MN 55117"
+// Same address split into parts, for structured data (JSON-LD).
+export const STORE_ADDRESS_PARTS = {
+  streetAddress: "1110 Rice St",
+  addressLocality: "St. Paul",
+  addressRegion: "MN",
+  postalCode: "55117",
+  addressCountry: "US",
+}
 export const STORE_PHONE = "(612) 459-7870"
 // Derived tel: URI for phone links, e.g. href="tel:+16124597870"
 export const STORE_PHONE_TEL = `tel:+1${STORE_PHONE.replace(/\D/g, '')}`

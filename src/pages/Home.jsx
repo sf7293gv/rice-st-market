@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
 import { DAYS_ORDER, DEFAULT_HOURS, DEFAULT_OPEN, DEFAULT_CLOSE, storeTodayName, storeStatus } from '../lib/hours'
 import { useHydrated } from '../hooks/useHydrated'
+import { useCarriers, joinNames } from '../hooks/useCarriers'
 import './Home.css'
 
 
@@ -25,6 +26,7 @@ export default function Home() {
   const [hours, setHours] = useState([])
   const [now, setNow] = useState(() => new Date())
   const hydrated = useHydrated()
+  const carrierList = joinNames(useCarriers().map(c => c.name))
 
   const heroRef = useFadeIn()
   const announcementsRef = useFadeIn()
@@ -68,13 +70,17 @@ export default function Home() {
     ? storeStatus(displayHours, now)
     : { isOpen: true, label: `Open Daily · ${fmtTime(displayHours[0].open_time)} – ${fmtTime(displayHours[0].close_time)}` }
 
+  const metaDescription = carrierList
+    ? `Grocery, deli, electronics and phone repair in St. Paul, MN. We carry prepaid and wireless service from ${carrierList}.`
+    : 'Your neighborhood grocery, deli, electronics, and phone repair shop in St. Paul, MN.'
+
   return (
     <div className="home">
       <Helmet>
         <title>{`${STORE_NAME} — Grocery, Deli & Electronics | St. Paul, MN`}</title>
-        <meta name="description" content="Your neighborhood grocery, deli, electronics, and phone repair shop in St. Paul, MN." />
+        <meta name="description" content={metaDescription} />
         <meta property="og:title" content={`${STORE_NAME} — Grocery, Deli & Electronics | St. Paul, MN`} />
-        <meta property="og:description" content="Your neighborhood grocery, deli, electronics, and phone repair shop in St. Paul, MN." />
+        <meta property="og:description" content={metaDescription} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/`} />
         <link rel="canonical" href={`${SITE_URL}/`} />
@@ -91,6 +97,11 @@ export default function Home() {
           <p className="hero-subtitle fade-up is-visible" style={{ transitionDelay: '0.2s' }}>
             Your neighborhood store on Rice Street
           </p>
+          {carrierList && (
+            <p className="hero-carriers fade-up is-visible" style={{ transitionDelay: '0.25s' }}>
+              We carry prepaid and wireless service from <Link to="/plans">{carrierList}</Link>.
+            </p>
+          )}
           <div className="hero-cta fade-up is-visible" style={{ transitionDelay: '0.3s' }}>
             <Link to="/electronics" className="btn-primary">Explore Devices</Link>
             <Link to="/repairs" className="btn-primary">Explore Our Services</Link>

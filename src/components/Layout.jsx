@@ -5,6 +5,7 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import WhatsAppButton from './WhatsAppButton'
 import BackToTopButton from './BackToTopButton'
+import StoreJsonLd from './StoreJsonLd'
 
 export default function Layout() {
   const { pathname, hash } = useLocation()
@@ -16,6 +17,7 @@ export default function Layout() {
 
   return (
     <>
+      <StoreJsonLd />
       <Navbar />
       <main>
         <Outlet />

@@ -33,11 +33,12 @@ for (const r of ROUTES.filter(r => r.path !== '/')) {
   }
 }
 
-// Public data for /plans. A failed or slow fetch must not fail the build: the page then
-// pre-renders without it (loading state) and the browser fetches it as usual.
-async function fetchTable(table) {
+// Public data baked into the HTML (carriers for the footer/Home/JSON-LD on every page, hours for
+// the store JSON-LD, plans for /plans). A failed or slow fetch must not fail the build: pages then
+// pre-render without it and the browser fetches it as usual.
+async function fetchTable(table, order) {
   const env = loadEnv('production', root, 'VITE_')
-  const url = `${env.VITE_SUPABASE_URL}/rest/v1/${table}?select=*&order=display_order.asc`
+  const url = `${env.VITE_SUPABASE_URL}/rest/v1/${table}?select=*${order ? `&order=${order}` : ''}`
   try {
     const res = await fetch(url, {
       headers: { apikey: env.VITE_SUPABASE_ANON_KEY, Authorization: `Bearer ${env.VITE_SUPABASE_ANON_KEY}` },
@@ -46,14 +47,19 @@ async function fetchTable(table) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     return await res.json()
   } catch (err) {
-    console.warn(`[prerender] Could not fetch ${table} (${err.message}); /plans will pre-render without it.`)
+    console.warn(`[prerender] Could not fetch ${table} (${err.message}); pages will pre-render without it.`)
     return undefined
   }
 }
 
-const [carriers, plans] = await Promise.all([fetchTable('carriers'), fetchTable('plans')])
+const [carriers, plans, hours] = await Promise.all([
+  fetchTable('carriers', 'display_order.asc'),
+  fetchTable('plans', 'display_order.asc'),
+  fetchTable('hours'),
+])
 const buildYear = new Date().getFullYear()
-const dataFor = path => (path === '/plans' ? { buildYear, carriers, plans } : { buildYear })
+const shared = { buildYear, carriers, hours }
+const dataFor = path => (path === '/plans' ? { ...shared, plans } : shared)
 
 const { render } = await import(pathToFileURL(resolve(ssrDir, 'entry-server.js')).href)
 const template = readFileSync(resolve(dist, 'index.html'), 'utf8')

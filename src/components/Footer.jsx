@@ -7,6 +7,7 @@ import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2,
 import { DEFAULT_OPEN, DEFAULT_CLOSE, fmtTime } from '../lib/hours'
 import { useHydrated } from '../hooks/useHydrated'
 import { getPrerenderData } from '../lib/prerenderData'
+import { useCarriers } from '../hooks/useCarriers'
 import './Footer.css'
 
 const NAV_LINKS = [
@@ -25,6 +26,7 @@ export default function Footer() {
   const year = hydrated ? new Date().getFullYear() : (getPrerenderData('buildYear') ?? new Date().getFullYear())
   const [social, setSocial] = useState({ facebook: '', instagram: '', tiktok: '' })
   const [hours, setHours] = useState([])
+  const carrierNames = useCarriers().map(c => c.name)
 
   useEffect(() => {
     supabase
@@ -151,6 +153,12 @@ export default function Footer() {
           </div>
 
         </div>
+
+        {carrierNames.length > 0 && (
+          <p className="footer-carriers">
+            Carriers available: <Link to="/plans">{carrierNames.join(', ')}</Link>.
+          </p>
+        )}
 
         <div className="footer-bottom">
           <p>© {year} {STORE_NAME}. All rights reserved.</p>

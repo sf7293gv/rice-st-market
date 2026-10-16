@@ -11,18 +11,13 @@ import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, SITE_URL } from '../lib/siteConfig'
 import { getPrerenderData } from '../lib/prerenderData'
+import { useCarriers, joinNames } from '../hooks/useCarriers'
 import './Plans.css'
 
 const DEFAULT_MSG = (name) => `I'm interested in the ${name} plan, is it available?`
 
 const PAGE_TITLE = 'Prepaid Plans: T-Mobile, Verizon, AT&T, Xfinity Mobile & More | St. Paul, MN'
 const PAGE_DESCRIPTION = `Prepaid and wireless plans from T-Mobile, Verizon, AT&T, Metro, Boost, Total Wireless, Xfinity Mobile, Tracfone and H2O at ${STORE_NAME} in St. Paul, MN.`
-
-// ['A', 'B', 'C'] → "A, B and C"
-function joinNames(names) {
-  if (names.length <= 1) return names.join('')
-  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
-}
 
 // FAQ entries shared by the visible FAQ section and the FAQPage JSON-LD.
 function buildFaqs(carrierNames) {
@@ -44,7 +39,7 @@ export default function Plans() {
   // Start from the build-time snapshot (if any) so the pre-rendered HTML — carrier names,
   // intro and FAQ — hydrates without a mismatch; live data replaces it after mount.
   const [plans, setPlans] = useState(() => getPrerenderData('plans') ?? [])
-  const [carriers, setCarriers] = useState(() => getPrerenderData('carriers') ?? [])
+  const carriers = useCarriers()
   const [loading, setLoading] = useState(() => getPrerenderData('plans') === undefined)
   const [inquirePlan, setInquirePlan] = useState(null)
 
@@ -66,17 +61,6 @@ export default function Plans() {
       setLoading(false)
     }
     fetchPlans()
-  }, [])
-
-  useEffect(() => {
-    supabase
-      .from('carriers')
-      .select('*')
-      .order('display_order', { ascending: true })
-      .then(({ data, error }) => {
-        if (data) setCarriers(data)
-        if (error) console.error('carriers fetch error:', error)
-      })
   }, [])
 
   const carrierNames = carriers.map(c => c.name)

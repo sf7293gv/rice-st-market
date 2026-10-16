@@ -109,6 +109,22 @@
 }
 
 /* Bottom bar */
+.footer-carriers {
+  padding: 18px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+}
+
+.footer-carriers a {
+  color: rgba(255,255,255,0.72);
+}
+
+.footer-carriers a:hover {
+  color: var(--primary);
+}
+
 .footer-bottom {
   display: flex;
   align-items: center;
