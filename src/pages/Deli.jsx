@@ -48,12 +48,13 @@ export default function Deli() {
   return (
     <div className="deli-page">
       <Helmet>
-        <title>Deli — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Deli — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Browse our fresh deli sandwiches and hot food menu at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:title" content={`Deli — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Browse our fresh deli sandwiches and hot food menu at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/deli`} />
+        <link rel="canonical" href={`${SITE_URL}/deli`} />
       </Helmet>
 
       {/* ── Page header ── */}

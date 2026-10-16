@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL } from '../lib/siteConfig'
 import { DEFAULT_OPEN, DEFAULT_CLOSE, fmtTime } from '../lib/hours'
+import { useHydrated } from '../hooks/useHydrated'
+import { getPrerenderData } from '../lib/prerenderData'
 import './Footer.css'
 
 const NAV_LINKS = [
@@ -18,7 +20,9 @@ const NAV_LINKS = [
 ]
 
 export default function Footer() {
-  const year = new Date().getFullYear()
+  // The pre-rendered HTML carries its build year; switch to the live year after hydration.
+  const hydrated = useHydrated()
+  const year = hydrated ? new Date().getFullYear() : (getPrerenderData('buildYear') ?? new Date().getFullYear())
   const [social, setSocial] = useState({ facebook: '', instagram: '', tiktok: '' })
   const [hours, setHours] = useState([])
 

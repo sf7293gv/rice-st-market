@@ -28,12 +28,13 @@ export default function Tobacco() {
   return (
     <div className="tobacco-page">
       <Helmet>
-        <title>Tobacco — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Tobacco — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Browse our tobacco selection at ${STORE_NAME} in St. Paul. Visit us at ${STORE_ADDRESS.split(',')[0]} for pricing and availability.`} />
         <meta property="og:title" content={`Tobacco — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Browse our tobacco selection at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/tobacco`} />
+        <link rel="canonical" href={`${SITE_URL}/tobacco`} />
       </Helmet>
 
       {/* ── Hero ── */}

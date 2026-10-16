@@ -1,3 +1,14 @@
+/* Arial sized to Inter's metrics, shown until the Inter web font loads. Pre-rendered pages
+   paint before the font arrives, so this keeps text from reflowing (layout shift) on swap. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  size-adjust: 107.12%;
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+}
+
 :root {
   --primary: #E8841A;
   --primary-light: #ef9c44;
@@ -30,7 +41,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.65;

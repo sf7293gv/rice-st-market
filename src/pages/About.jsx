@@ -6,6 +6,7 @@ import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
 import { DAYS_ORDER, DEFAULT_HOURS, DEFAULT_OPEN, DEFAULT_CLOSE, storeTodayName } from '../lib/hours'
+import { useHydrated } from '../hooks/useHydrated'
 import './About.css'
 
 
@@ -57,7 +58,8 @@ export default function About() {
     })
   }, [])
 
-  const todayName = storeTodayName()
+  // "Today" only after hydration, so the pre-rendered HTML matches the first client render.
+  const todayName = useHydrated() ? storeTodayName() : null
   const orderedHours = DAYS_ORDER.map(d => hours.find(h => h.day === d)).filter(Boolean)
   const displayHours = orderedHours.length === 7
     ? orderedHours
@@ -74,12 +76,13 @@ export default function About() {
   return (
     <div className="about-page">
       <Helmet>
-        <title>About Us — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`About Us — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Learn about ${STORE_NAME} — a community store in St. Paul, MN.`} />
         <meta property="og:title" content={`About Us — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Learn about ${STORE_NAME} — a community store in St. Paul, MN.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/about`} />
+        <link rel="canonical" href={`${SITE_URL}/about`} />
       </Helmet>
 
       {/* ── Hero ── */}

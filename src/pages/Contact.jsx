@@ -39,12 +39,13 @@ export default function Contact() {
   return (
     <div className="contact-page">
       <Helmet>
-        <title>Contact — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Contact — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Contact ${STORE_NAME} — located at ${STORE_ADDRESS}. Call, visit, or send a message.`} />
         <meta property="og:title" content={`Contact — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Contact ${STORE_NAME} — located at ${STORE_ADDRESS}. Call, visit, or send a message.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/contact`} />
+        <link rel="canonical" href={`${SITE_URL}/contact`} />
       </Helmet>
 
       {/* ── Header ── */}

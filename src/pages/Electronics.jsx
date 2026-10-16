@@ -55,12 +55,13 @@ export default function Electronics() {
   return (
     <div className="electronics-page">
       <Helmet>
-        <title>Electronics &amp; Phones — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Electronics & Phones — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Shop new and used phones, electronics, and accessories at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:title" content={`Electronics & Phones — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Shop new and used phones, electronics, and accessories at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/electronics`} />
+        <link rel="canonical" href={`${SITE_URL}/electronics`} />
       </Helmet>
 
       {/* ── Hero ── */}

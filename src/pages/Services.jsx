@@ -51,12 +51,13 @@ export default function Services() {
   return (
     <div className="services-page">
       <Helmet>
-        <title>Services — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Services — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Services offered at ${STORE_NAME} — grocery, deli, electronics, and repairs.`} />
         <meta property="og:title" content={`Services — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Services offered at ${STORE_NAME} — grocery, deli, electronics, and repairs.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/services`} />
+        <link rel="canonical" href={`${SITE_URL}/services`} />
       </Helmet>
 
 

@@ -1,3 +1,44 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/plans",
+      "destination": "/plans.html"
+    },
+    {
+      "source": "/electronics",
+      "destination": "/electronics.html"
+    },
+    {
+      "source": "/accessories",
+      "destination": "/accessories.html"
+    },
+    {
+      "source": "/grocery",
+      "destination": "/grocery.html"
+    },
+    {
+      "source": "/deli",
+      "destination": "/deli.html"
+    },
+    {
+      "source": "/repairs",
+      "destination": "/repairs.html"
+    },
+    {
+      "source": "/services",
+      "destination": "/services.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/spa.html"
+    }
+  ]
 }

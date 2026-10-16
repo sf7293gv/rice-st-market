@@ -10,6 +10,7 @@ import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
 import { storeDateStr, storeNowMins, toMins } from '../lib/hours'
+import { useHydrated } from '../hooks/useHydrated'
 import './Repairs.css'
 
 const JS_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -19,6 +20,12 @@ function fmt12h(t) {
   const [h, m] = t.split(':').map(Number)
   const ampm = h >= 12 ? 'PM' : 'AM'
   return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${ampm}`
+}
+
+function daysFromNow(n) {
+  const d = new Date()
+  d.setDate(d.getDate() + n)
+  return d
 }
 
 function getTimeSlotsForDate(dateStr, hours) {
@@ -107,12 +114,13 @@ export default function Repairs() {
   return (
     <div className="repairs-page">
       <Helmet>
-        <title>Phone Repair Services — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Phone Repair Services — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Phone and electronics repair services in St. Paul — book an appointment online at ${STORE_NAME}.`} />
         <meta property="og:title" content={`Phone Repair Services — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Phone and electronics repair services in St. Paul — book an appointment online at ${STORE_NAME}.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/repairs`} />
+        <link rel="canonical" href={`${SITE_URL}/repairs`} />
       </Helmet>
 
       {/* ── Hero ── */}
@@ -296,9 +304,11 @@ export default function Repairs() {
 const EMPTY_FORM = { serviceId: '', serviceName: '', date: '', time: '', name: '', phone: '', notes: '' }
 
 function BookingForm({ services, hours, ownerPhone }) {
-  const today = storeDateStr()
-  const maxD = new Date(); maxD.setDate(maxD.getDate() + 90)
-  const maxDate = storeDateStr(maxD)
+  // Date limits depend on the current date, so they're only set after hydration
+  // (the pre-rendered HTML can't know the visitor's "today").
+  const hydrated = useHydrated()
+  const today = hydrated ? storeDateStr() : undefined
+  const maxDate = hydrated ? storeDateStr(daysFromNow(90)) : undefined
 
   const [form, setForm]       = useState(EMPTY_FORM)
   const [errors, setErrors]   = useState({})

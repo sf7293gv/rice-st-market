@@ -48,12 +48,13 @@ export default function Grocery() {
   return (
     <div className="grocery-page">
       <Helmet>
-        <title>Grocery — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Grocery — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Browse our grocery selection — pantry staples, drinks, and snacks — at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:title" content={`Grocery — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Browse our grocery selection — pantry staples, drinks, and snacks — at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/grocery`} />
+        <link rel="canonical" href={`${SITE_URL}/grocery`} />
       </Helmet>
 
       {/* ── Page header ── */}

@@ -39,12 +39,13 @@ export default function Accessories() {
   return (
     <div className="accessories-page">
       <Helmet>
-        <title>Accessories — {STORE_NAME} | St. Paul, MN</title>
+        <title>{`Accessories — ${STORE_NAME} | St. Paul, MN`}</title>
         <meta name="description" content={`Shop phone cases, chargers, screen protectors, and more accessories at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:title" content={`Accessories — ${STORE_NAME} | St. Paul, MN`} />
         <meta property="og:description" content={`Shop phone cases, chargers, screen protectors, and more accessories at ${STORE_NAME} in St. Paul.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/accessories`} />
+        <link rel="canonical" href={`${SITE_URL}/accessories`} />
       </Helmet>
 
       {/* ── Hero ── */}

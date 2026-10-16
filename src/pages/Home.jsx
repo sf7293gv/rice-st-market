@@ -7,6 +7,7 @@ import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
 import { DAYS_ORDER, DEFAULT_HOURS, DEFAULT_OPEN, DEFAULT_CLOSE, storeTodayName, storeStatus } from '../lib/hours'
+import { useHydrated } from '../hooks/useHydrated'
 import './Home.css'
 
 
@@ -23,6 +24,7 @@ export default function Home() {
   const [specials, setSpecials] = useState([])
   const [hours, setHours] = useState([])
   const [now, setNow] = useState(() => new Date())
+  const hydrated = useHydrated()
 
   const heroRef = useFadeIn()
   const announcementsRef = useFadeIn()
@@ -52,7 +54,8 @@ export default function Home() {
     return () => clearInterval(id)
   }, [])
 
-  const todayName = storeTodayName()
+  // Time-dependent values only after hydration, so the pre-rendered HTML matches the first client render.
+  const todayName = hydrated ? storeTodayName() : null
   const orderedHours = DAYS_ORDER.map(d => hours.find(h => h.day === d)).filter(Boolean)
   const displayHours = orderedHours.length === 7
     ? orderedHours
@@ -61,17 +64,20 @@ export default function Home() {
     && orderedHours.every(h => !h.is_closed)
     && orderedHours.every(h => h.open_time === orderedHours[0].open_time && h.close_time === orderedHours[0].close_time)
   const todayRow = orderedHours.find(h => h.day === todayName)
-  const status = storeStatus(displayHours, now)
+  const status = hydrated
+    ? storeStatus(displayHours, now)
+    : { isOpen: true, label: `Open Daily · ${fmtTime(displayHours[0].open_time)} – ${fmtTime(displayHours[0].close_time)}` }
 
   return (
     <div className="home">
       <Helmet>
-        <title>{STORE_NAME} — Grocery, Deli &amp; Electronics | St. Paul, MN</title>
+        <title>{`${STORE_NAME} — Grocery, Deli & Electronics | St. Paul, MN`}</title>
         <meta name="description" content="Your neighborhood grocery, deli, electronics, and phone repair shop in St. Paul, MN." />
         <meta property="og:title" content={`${STORE_NAME} — Grocery, Deli & Electronics | St. Paul, MN`} />
         <meta property="og:description" content="Your neighborhood grocery, deli, electronics, and phone repair shop in St. Paul, MN." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/`} />
+        <link rel="canonical" href={`${SITE_URL}/`} />
       </Helmet>
 
       {/* ── Hero ── */}

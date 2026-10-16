@@ -8,7 +8,7 @@ export default function NotFound() {
   return (
     <div className="nf-page">
       <Helmet>
-        <title>Page Not Found — {STORE_NAME}</title>
+        <title>{`Page Not Found — ${STORE_NAME}`}</title>
         <meta name="robots" content="noindex" />
       </Helmet>
 

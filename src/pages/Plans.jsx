@@ -10,6 +10,7 @@ import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, SITE_URL } from '../lib/siteConfig'
+import { getPrerenderData } from '../lib/prerenderData'
 import './Plans.css'
 
 const DEFAULT_MSG = (name) => `I'm interested in the ${name} plan, is it available?`
@@ -40,9 +41,11 @@ function buildFaqs(carrierNames) {
 }
 
 export default function Plans() {
-  const [plans, setPlans] = useState([])
-  const [carriers, setCarriers] = useState([])
-  const [loading, setLoading] = useState(true)
+  // Start from the build-time snapshot (if any) so the pre-rendered HTML — carrier names,
+  // intro and FAQ — hydrates without a mismatch; live data replaces it after mount.
+  const [plans, setPlans] = useState(() => getPrerenderData('plans') ?? [])
+  const [carriers, setCarriers] = useState(() => getPrerenderData('carriers') ?? [])
+  const [loading, setLoading] = useState(() => getPrerenderData('plans') === undefined)
   const [inquirePlan, setInquirePlan] = useState(null)
 
   const headerRef = useFadeIn()
@@ -97,6 +100,7 @@ export default function Plans() {
         <meta property="og:description" content={PAGE_DESCRIPTION} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/plans`} />
+        <link rel="canonical" href={`${SITE_URL}/plans`} />
         {faqs.length > 0 && (
           <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
         )}
