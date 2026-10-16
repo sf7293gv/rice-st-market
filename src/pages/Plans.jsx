@@ -3,15 +3,41 @@
 // modal), but plans aren't rows in the `products` table, so the inquiry submitted here
 // omits product_id (nullable, FK'd to products specifically) and only sets product_name.
 // A "Carriers We Carry" section (from the `carriers` table) sits above the plan cards and
-// is hidden when that table is empty.
+// is hidden when that table is empty. The carrier intro sentence, FAQ, and FAQPage JSON-LD
+// are built from the same carriers rows, so new carriers appear in all of them automatically.
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
-import { STORE_NAME, SITE_URL } from '../lib/siteConfig'
+import { STORE_NAME, STORE_PHONE, STORE_PHONE_TEL, SITE_URL } from '../lib/siteConfig'
 import './Plans.css'
 
 const DEFAULT_MSG = (name) => `I'm interested in the ${name} plan, is it available?`
+
+const PAGE_TITLE = 'Prepaid Plans: T-Mobile, Verizon, AT&T, Xfinity Mobile & More | St. Paul, MN'
+const PAGE_DESCRIPTION = `Prepaid and wireless plans from T-Mobile, Verizon, AT&T, Metro, Boost, Total Wireless, Xfinity Mobile, Tracfone and H2O at ${STORE_NAME} in St. Paul, MN.`
+
+// ['A', 'B', 'C'] → "A, B and C"
+function joinNames(names) {
+  if (names.length <= 1) return names.join('')
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+}
+
+// FAQ entries shared by the visible FAQ section and the FAQPage JSON-LD.
+function buildFaqs(carrierNames) {
+  if (carrierNames.length === 0) return []
+  const faqs = [{
+    q: 'Which wireless carriers do you carry?',
+    a: `We carry prepaid and wireless service from ${joinNames(carrierNames)}. Stop by or call ${STORE_PHONE} for details.`,
+  }]
+  if (carrierNames.includes('Xfinity Mobile')) {
+    faqs.push({
+      q: 'Do you carry Xfinity Mobile?',
+      a: `Yes, Xfinity Mobile is available at our store. Stop by or call ${STORE_PHONE} for details.`,
+    })
+  }
+  return faqs
+}
 
 export default function Plans() {
   const [plans, setPlans] = useState([])
@@ -50,15 +76,30 @@ export default function Plans() {
       })
   }, [])
 
+  const carrierNames = carriers.map(c => c.name)
+  const faqs = buildFaqs(carrierNames)
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  }
+
   return (
     <div className="plans-page">
       <Helmet>
-        <title>Prepaid Plans — {STORE_NAME} | St. Paul, MN</title>
-        <meta name="description" content={`Browse prepaid carrier plans at ${STORE_NAME} in St. Paul.`} />
-        <meta property="og:title" content={`Prepaid Plans — ${STORE_NAME} | St. Paul, MN`} />
-        <meta property="og:description" content={`Browse prepaid carrier plans at ${STORE_NAME} in St. Paul.`} />
+        <title>{PAGE_TITLE}</title>
+        <meta name="description" content={PAGE_DESCRIPTION} />
+        <meta property="og:title" content={PAGE_TITLE} />
+        <meta property="og:description" content={PAGE_DESCRIPTION} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/plans`} />
+        {faqs.length > 0 && (
+          <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+        )}
       </Helmet>
 
       {/* ── Hero ── */}
@@ -81,6 +122,10 @@ export default function Plans() {
             <div className="section-header centered fade-up" ref={carriersRef}>
               <span className="section-eyebrow">Carriers</span>
               <h2 className="section-title">Carriers We Carry</h2>
+              <p className="section-subtitle carriers-intro">
+                {STORE_NAME} carries prepaid and wireless service from {joinNames(carrierNames)}.
+                {' '}Stop by 1110 Rice St, St. Paul, MN or call <a href={STORE_PHONE_TEL}>{STORE_PHONE}</a>.
+              </p>
             </div>
             <div className="carriers-grid">
               {carriers.map(carrier => (
@@ -128,6 +173,26 @@ export default function Plans() {
           )}
         </div>
       </section>
+
+      {/* ── FAQ ── */}
+      {faqs.length > 0 && (
+        <section className="plans-faq-section">
+          <div className="container">
+            <div className="section-header centered">
+              <span className="section-eyebrow">FAQ</span>
+              <h2 className="section-title">Common Questions</h2>
+            </div>
+            <dl className="plans-faq">
+              {faqs.map(f => (
+                <div key={f.q} className="plans-faq-item">
+                  <dt>{f.q}</dt>
+                  <dd>{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
 
       {inquirePlan && (
         <InquiryModal plan={inquirePlan} onClose={handleCloseModal} />

@@ -87,6 +87,57 @@
   text-align: center;
 }
 
+.carriers-intro {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 680px;
+}
+
+.carriers-intro a {
+  color: var(--primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ══ FAQ ══════════════════════════════════════════════════ */
+.plans-faq-section {
+  padding: 0 0 96px;
+}
+
+.plans-faq-section .section-header {
+  margin-bottom: 32px;
+}
+
+.plans-faq {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plans-faq-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 24px;
+}
+
+.plans-faq-item dt {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.plans-faq-item dd {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
 /* ══ Grid section ═════════════════════════════════════════ */
 .plans-grid-section {
   padding: 56px 0 96px;
@@ -298,6 +349,14 @@
 
   .carriers-section {
     padding: 40px 0 0;
+  }
+
+  .plans-faq-section {
+    padding: 0 0 72px;
+  }
+
+  .plans-faq-item {
+    padding: 16px 18px;
   }
 
   .carriers-grid {
