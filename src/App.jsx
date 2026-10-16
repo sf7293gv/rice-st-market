@@ -25,6 +25,7 @@ import AnnouncementsManager from './pages/admin/AnnouncementsManager'
 import HoursManager from './pages/admin/HoursManager'
 import ElectronicsManager from './pages/admin/ElectronicsManager'
 import PlansManager from './pages/admin/PlansManager'
+import CarriersManager from './pages/admin/CarriersManager'
 import InquiriesManager from './pages/admin/InquiriesManager'
 import RepairsManager from './pages/admin/RepairsManager'
 import RepairMediaManager from './pages/admin/RepairMediaManager'
@@ -74,6 +75,7 @@ export default function App() {
           <Route path="hours" element={<HoursManager />} />
           <Route path="electronics" element={<ElectronicsManager />} />
           <Route path="plans" element={<PlansManager />} />
+          <Route path="carriers" element={<CarriersManager />} />
           <Route path="inquiries" element={<InquiriesManager />} />
           <Route path="repairs" element={<RepairsManager />} />
           <Route path="repair-media" element={<RepairMediaManager />} />

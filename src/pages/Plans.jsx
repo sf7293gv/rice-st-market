@@ -2,6 +2,8 @@
 // Mirrors Electronics.jsx's structure (card grid, "Call for Quote" fallback, inquiry
 // modal), but plans aren't rows in the `products` table, so the inquiry submitted here
 // omits product_id (nullable, FK'd to products specifically) and only sets product_name.
+// A "Carriers We Carry" section (from the `carriers` table) sits above the plan cards and
+// is hidden when that table is empty.
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
@@ -13,10 +15,12 @@ const DEFAULT_MSG = (name) => `I'm interested in the ${name} plan, is it availab
 
 export default function Plans() {
   const [plans, setPlans] = useState([])
+  const [carriers, setCarriers] = useState([])
   const [loading, setLoading] = useState(true)
   const [inquirePlan, setInquirePlan] = useState(null)
 
   const headerRef = useFadeIn()
+  const carriersRef = useFadeIn()
 
   function handleCloseModal() {
     setInquirePlan(null)
@@ -33,6 +37,17 @@ export default function Plans() {
       setLoading(false)
     }
     fetchPlans()
+  }, [])
+
+  useEffect(() => {
+    supabase
+      .from('carriers')
+      .select('*')
+      .order('display_order', { ascending: true })
+      .then(({ data, error }) => {
+        if (data) setCarriers(data)
+        if (error) console.error('carriers fetch error:', error)
+      })
   }, [])
 
   return (
@@ -58,6 +73,37 @@ export default function Plans() {
           </div>
         </div>
       </div>
+
+      {/* ── Carriers We Carry ── */}
+      {carriers.length > 0 && (
+        <section className="carriers-section">
+          <div className="container">
+            <div className="section-header centered fade-up" ref={carriersRef}>
+              <span className="section-eyebrow">Carriers</span>
+              <h2 className="section-title">Carriers We Carry</h2>
+            </div>
+            <div className="carriers-grid">
+              {carriers.map(carrier => (
+                <div key={carrier.id} className="carrier-card">
+                  {carrier.logo_url
+                    ? (
+                      <div className="carrier-logo">
+                        <img src={carrier.logo_url} alt={`${carrier.name} logo`} loading="lazy" />
+                      </div>
+                    )
+                    : <div className="carrier-logo carrier-logo-fallback">
+                        {/* Non-breaking hyphens keep names like "T-Mobile" on one line */}
+                        {carrier.name.replace(/-/g, '\u2011')}
+                      </div>
+                  }
+                  {/* The name tile already shows the name when there's no logo */}
+                  {carrier.logo_url && <p className="carrier-name">{carrier.name}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── Grid ── */}
       <section className="plans-grid-section">

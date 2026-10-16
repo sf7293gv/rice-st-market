@@ -20,6 +20,71 @@
   line-height: 1.7;
 }
 
+/* ══ Carriers We Carry ═════════════════════════════════════ */
+.carriers-section {
+  padding: 56px 0 0;
+}
+
+.carriers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.carrier-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.carrier-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.carrier-logo {
+  width: 100%;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carrier-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carrier-logo-fallback {
+  background: var(--secondary);
+  color: var(--primary);
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.carrier-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
 /* ══ Grid section ═════════════════════════════════════════ */
 .plans-grid-section {
   padding: 56px 0 96px;
@@ -227,6 +292,27 @@
 
   .plans-grid-section {
     padding: 40px 0 72px;
+  }
+
+  .carriers-section {
+    padding: 40px 0 0;
+  }
+
+  .carriers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .carrier-card {
+    padding: 16px 12px 12px;
+  }
+
+  .carrier-logo {
+    height: 56px;
+  }
+
+  .carrier-logo-fallback {
+    font-size: 0.95rem;
   }
 }
 
