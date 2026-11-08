@@ -1,10 +1,8 @@
-// "Watch Our Repairs" — TikTok videos from the repair_videos table, using TikTok's official
-// embed (blockquote + embed.js). The heading, intro line and follow button are pre-rendered;
-// embeds render only after hydration, and embed.js loads only once the section is near the
-// viewport. embed.js tags each blockquote with an id and later looks it up again, so each embed
-// slot is an empty element React never manages: its markup is written once from an effect and
-// never re-applied (re-applying it mid-load replaces the tagged node and the embed fails).
-import { useState, useEffect, useRef } from 'react'
+// "Watch Our Repairs" — TikTok videos from the repair_videos table, shown with TikTok's iframe
+// player (https://www.tiktok.com/player/v1/<videoId>). The heading, intro line and follow button
+// are pre-rendered; players render only after hydration and load lazily as they near the
+// viewport. Each player has a "Watch on TikTok" link in case it can't load for a visitor.
+import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useHydrated } from '../hooks/useHydrated'
 import { parseTikTokUrl, TIKTOK_PROFILE_URL, TIKTOK_HANDLE } from '../lib/tiktok'
@@ -12,47 +10,12 @@ import { STORE_NAME } from '../lib/siteConfig'
 import './RepairVideos.css'
 
 const INITIAL_COUNT = 6
-const EMBED_SCRIPT_ID = 'tiktok-embed-script'
-
-const escapeAttr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
-
-function embedHtml({ url, user, videoId }) {
-  return `<blockquote class="tiktok-embed" cite="${escapeAttr(url)}" data-video-id="${escapeAttr(videoId)}">` +
-    `<section><a target="_blank" rel="noopener noreferrer" href="${escapeAttr(url)}">@${escapeAttr(user)} on TikTok</a></section>` +
-    '</blockquote>'
-}
-
-// One embed slot. Child effects run before the parent's, so every slot is filled before the
-// parent (re)runs embed.js.
-function TikTokEmbed({ url, user, videoId }) {
-  const ref = useRef(null)
-  useEffect(() => {
-    const el = ref.current
-    if (el.dataset.videoId === videoId) return
-    el.dataset.videoId = videoId
-    el.innerHTML = embedHtml({ url, user, videoId })
-  }, [url, user, videoId])
-  return <div ref={ref} className="repair-video-embed" />
-}
-
-// (Re)inserting embed.js makes TikTok scan the page for unprocessed blockquotes, which covers
-// embeds added later by "Show more".
-function runTikTokEmbed() {
-  document.getElementById(EMBED_SCRIPT_ID)?.remove()
-  const script = document.createElement('script')
-  script.id = EMBED_SCRIPT_ID
-  script.src = 'https://www.tiktok.com/embed.js'
-  script.async = true
-  document.body.appendChild(script)
-}
 
 export default function RepairVideos({ alt = false }) {
   const hydrated = useHydrated()
   const [videos, setVideos] = useState([])
   const [loaded, setLoaded] = useState(false)
   const [showAll, setShowAll] = useState(false)
-  const [nearViewport, setNearViewport] = useState(false)
-  const sectionRef = useRef(null)
 
   useEffect(() => {
     supabase
@@ -68,28 +31,8 @@ export default function RepairVideos({ alt = false }) {
       })
   }, [])
 
-  // Flag the section once it comes within 400px of the viewport.
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setNearViewport(true)
-        observer.disconnect()
-      }
-    }, { rootMargin: '400px 0px' })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
   const visible = showAll ? videos : videos.slice(0, INITIAL_COUNT)
-  const showEmbeds = hydrated && loaded && videos.length > 0
-  const visibleKey = visible.map(v => v.id).join(',')
-
-  // Load (or re-run) embed.js once the section is near the viewport and its embeds are in the DOM.
-  useEffect(() => {
-    if (showEmbeds && nearViewport && visibleKey) runTikTokEmbed()
-  }, [showEmbeds, nearViewport, visibleKey])
+  const showPlayers = hydrated && loaded && videos.length > 0
 
   const followButton = (
     <a className="btn-primary repair-videos-follow" href={TIKTOK_PROFILE_URL} target="_blank" rel="noopener noreferrer">
@@ -99,7 +42,7 @@ export default function RepairVideos({ alt = false }) {
   )
 
   return (
-    <section ref={sectionRef} className={`section${alt ? ' section-alt' : ''} repair-videos-section`}>
+    <section className={`section${alt ? ' section-alt' : ''} repair-videos-section`}>
       <div className="container">
         <div className="section-header centered">
           <span className="section-eyebrow">On TikTok</span>
@@ -109,13 +52,24 @@ export default function RepairVideos({ alt = false }) {
           </p>
         </div>
 
-        {showEmbeds ? (
+        {showPlayers ? (
           <>
             <div className="repair-videos-grid">
               {visible.map(v => (
                 <figure key={v.id} className="repair-video">
-                  <TikTokEmbed {...v.parsed} />
+                  <div className="repair-video-frame">
+                    <iframe
+                      src={`https://www.tiktok.com/player/v1/${v.parsed.videoId}`}
+                      title={v.title || 'Repair video'}
+                      allow="fullscreen; autoplay"
+                      allowFullScreen
+                      loading="lazy"
+                    />
+                  </div>
                   {v.title && <figcaption className="repair-video-title">{v.title}</figcaption>}
+                  <a className="repair-video-link" href={v.parsed.url} target="_blank" rel="noopener noreferrer">
+                    Watch on TikTok
+                  </a>
                 </figure>
               ))}
             </div>
