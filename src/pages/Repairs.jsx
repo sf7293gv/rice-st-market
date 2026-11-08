@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2, STORE_PHONE_2_TEL, SITE_URL } from '../lib/siteConfig'
 import { storeDateStr, storeNowMins, toMins } from '../lib/hours'
 import { useHydrated } from '../hooks/useHydrated'
+import RepairVideos from '../components/RepairVideos'
 import './Repairs.css'
 
 const JS_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -216,6 +217,9 @@ export default function Repairs() {
           </div>
         </section>
       )}
+
+      {/* ── Watch Our Repairs (TikTok) — grey background when Before & After is hidden, so sections alternate ── */}
+      <RepairVideos alt={media.length === 0} />
 
       {/* ── Book a Repair ── */}
       <section className="section" id="booking">

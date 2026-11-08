@@ -1,0 +1,92 @@
+/* ══ Watch Our Repairs (TikTok) ══════════════════════════════ */
+.repair-videos-intro {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Up to 3 columns of ≤325px embeds; columns drop to 2 and then 1 as the screen narrows. */
+.repair-videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 325px));
+  justify-content: center;
+  gap: 28px 24px;
+  max-width: calc(3 * 325px + 2 * 24px);
+  margin: 0 auto;
+}
+
+.repair-video {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.repair-video-embed {
+  width: 100%;
+  max-width: 325px;
+}
+
+/* TikTok's blockquote (and the iframe embed.js swaps in) defaults to min-width 325px. */
+.repair-video-embed blockquote.tiktok-embed,
+.repair-video-embed iframe {
+  width: 100% !important;
+  max-width: 325px !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+}
+
+/* Fallback shown until embed.js runs: a simple link card the height of a video. */
+.repair-video-embed blockquote.tiktok-embed {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-size: 0.9rem;
+}
+
+.repair-video-title {
+  margin-top: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
+.repair-videos-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.repair-videos-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.repair-videos-follow-card {
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.repair-videos-follow-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}

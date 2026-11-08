@@ -31,6 +31,7 @@ import CarriersManager from './pages/admin/CarriersManager'
 import InquiriesManager from './pages/admin/InquiriesManager'
 import RepairsManager from './pages/admin/RepairsManager'
 import RepairMediaManager from './pages/admin/RepairMediaManager'
+import RepairVideosManager from './pages/admin/RepairVideosManager'
 import BookingsManager from './pages/admin/BookingsManager'
 import AdminSettings from './pages/admin/AdminSettings'
 import TobaccoManager from './pages/admin/TobaccoManager'
@@ -80,6 +81,7 @@ export default function App() {
         <Route path="inquiries" element={<InquiriesManager />} />
         <Route path="repairs" element={<RepairsManager />} />
         <Route path="repair-media" element={<RepairMediaManager />} />
+        <Route path="repair-videos" element={<RepairVideosManager />} />
         <Route path="bookings" element={<BookingsManager />} />
         <Route path="tobacco" element={<TobaccoManager />} />
         <Route path="settings" element={<AdminSettings />} />
