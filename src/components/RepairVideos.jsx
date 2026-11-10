@@ -1,38 +1,21 @@
-// "Watch Our Repairs" — TikTok videos from the repair_videos table, shown with TikTok's iframe
-// player (https://www.tiktok.com/player/v1/<videoId>). The heading, intro line and follow button
-// are pre-rendered; players render only after hydration and load lazily as they near the
-// viewport. Each player has a "Watch on TikTok" link in case it can't load for a visitor.
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+// "Watch Our Repairs" — videos uploaded through Admin → Repair Media (repair_media rows with
+// type 'video'), played with native <video> elements. The Repairs page passes them in (it already
+// loads repair_media); photos stay in the Before & After section, so nothing shows twice.
+// The heading, intro line and follow button are pre-rendered; videos render after hydration.
+import { useState } from 'react'
 import { useHydrated } from '../hooks/useHydrated'
-import { parseTikTokUrl, TIKTOK_PROFILE_URL, TIKTOK_HANDLE } from '../lib/tiktok'
+import { TIKTOK_PROFILE_URL, TIKTOK_HANDLE } from '../lib/tiktok'
 import { STORE_NAME } from '../lib/siteConfig'
 import './RepairVideos.css'
 
 const INITIAL_COUNT = 6
 
-export default function RepairVideos({ alt = false }) {
+export default function RepairVideos({ videos = [], alt = false }) {
   const hydrated = useHydrated()
-  const [videos, setVideos] = useState([])
-  const [loaded, setLoaded] = useState(false)
   const [showAll, setShowAll] = useState(false)
 
-  useEffect(() => {
-    supabase
-      .from('repair_videos')
-      .select('*')
-      .order('display_order', { ascending: true })
-      .order('created_at', { ascending: true })
-      .then(({ data, error }) => {
-        if (error) console.error('repair_videos fetch error:', error)
-        // Skip any row that isn't a valid canonical TikTok video URL.
-        if (data) setVideos(data.map(v => ({ ...v, parsed: parseTikTokUrl(v.tiktok_url) })).filter(v => !v.parsed.error))
-        setLoaded(true)
-      })
-  }, [])
-
   const visible = showAll ? videos : videos.slice(0, INITIAL_COUNT)
-  const showPlayers = hydrated && loaded && videos.length > 0
+  const showVideos = hydrated && videos.length > 0
 
   const followButton = (
     <a className="btn-primary repair-videos-follow" href={TIKTOK_PROFILE_URL} target="_blank" rel="noopener noreferrer">
@@ -45,31 +28,22 @@ export default function RepairVideos({ alt = false }) {
     <section className={`section${alt ? ' section-alt' : ''} repair-videos-section`}>
       <div className="container">
         <div className="section-header centered">
-          <span className="section-eyebrow">On TikTok</span>
+          <span className="section-eyebrow">On Video</span>
           <h2 className="section-title">Watch Our Repairs</h2>
           <p className="section-subtitle repair-videos-intro">
             See how we fix phones, screens and batteries. Real repairs at {STORE_NAME}, St. Paul.
           </p>
         </div>
 
-        {showPlayers ? (
+        {showVideos ? (
           <>
             <div className="repair-videos-grid">
               {visible.map(v => (
                 <figure key={v.id} className="repair-video">
                   <div className="repair-video-frame">
-                    <iframe
-                      src={`https://www.tiktok.com/player/v1/${v.parsed.videoId}`}
-                      title={v.title || 'Repair video'}
-                      allow="fullscreen; autoplay"
-                      allowFullScreen
-                      loading="lazy"
-                    />
+                    <video src={v.url} controls playsInline preload="metadata" aria-label={v.description || 'Repair video'} />
                   </div>
-                  {v.title && <figcaption className="repair-video-title">{v.title}</figcaption>}
-                  <a className="repair-video-link" href={v.parsed.url} target="_blank" rel="noopener noreferrer">
-                    Watch on TikTok
-                  </a>
+                  {v.description && <figcaption className="repair-video-title">{v.description}</figcaption>}
                 </figure>
               ))}
             </div>

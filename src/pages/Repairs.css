@@ -123,16 +123,11 @@
   background: transparent;
 }
 
-.repair-media-photo img,
-.repair-media-video video {
+.repair-media-photo img {
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
   display: block;
-}
-
-.repair-media-video video {
-  background: #000;
 }
 
 .repair-media-overlay {

@@ -95,7 +95,9 @@ export default function Repairs() {
     fetchData()
   }, [])
 
+  // Photos show in Before & After; uploaded videos show in Watch Our Repairs, so nothing appears twice.
   const photos = media.filter(m => m.type === 'photo')
+  const videos = media.filter(m => m.type === 'video')
 
   useEffect(() => {
     if (lightbox === null) return
@@ -174,8 +176,8 @@ export default function Repairs() {
         </div>
       </section>
 
-      {/* ── Media ── */}
-      {media.length > 0 && (
+      {/* ── Before & After (photos) ── */}
+      {photos.length > 0 && (
         <section className="section section-alt">
           <div className="container">
             <div className="section-header centered fade-up" ref={mediaHeaderRef}>
@@ -184,42 +186,29 @@ export default function Repairs() {
               <p className="section-subtitle">Real repairs done right here at {STORE_NAME}.</p>
             </div>
             <div className="repair-media-grid stagger-grid fade-up" ref={mediaGridRef}>
-              {media.map(item => {
-                if (item.type === 'video') {
-                  return (
-                    <div key={item.id} className="repair-media-item repair-media-video">
-                      <video controls preload="metadata" playsInline>
-                        <source src={item.url} />
-                      </video>
-                      {item.description && <p className="repair-media-desc">{item.description}</p>}
-                    </div>
-                  )
-                }
-                const photoIdx = photos.findIndex(p => p.id === item.id)
-                return (
-                  <button
-                    key={item.id}
-                    className="repair-media-item repair-media-photo"
-                    onClick={() => setLightbox(photoIdx)}
-                    aria-label={`View photo${item.description ? ': ' + item.description : ''}`}
-                  >
-                    <img src={item.url} alt={item.description || 'Repair photo'} loading="lazy" />
-                    <div className="repair-media-overlay" aria-hidden="true">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                      </svg>
-                    </div>
-                    {item.description && <p className="repair-media-desc">{item.description}</p>}
-                  </button>
-                )
-              })}
+              {photos.map((item, photoIdx) => (
+                <button
+                  key={item.id}
+                  className="repair-media-item repair-media-photo"
+                  onClick={() => setLightbox(photoIdx)}
+                  aria-label={`View photo${item.description ? ': ' + item.description : ''}`}
+                >
+                  <img src={item.url} alt={item.description || 'Repair photo'} loading="lazy" />
+                  <div className="repair-media-overlay" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                    </svg>
+                  </div>
+                  {item.description && <p className="repair-media-desc">{item.description}</p>}
+                </button>
+              ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ── Watch Our Repairs (TikTok) — grey background when Before & After is hidden, so sections alternate ── */}
-      <RepairVideos alt={media.length === 0} />
+      {/* ── Watch Our Repairs (uploaded videos) — grey background when Before & After is hidden, so sections alternate ── */}
+      <RepairVideos videos={videos} alt={photos.length === 0} />
 
       {/* ── Book a Repair ── */}
       <section className="section" id="booking">
