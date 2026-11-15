@@ -21,6 +21,7 @@ const NAV = [
       { to: '/admin/announcements', label: 'Announcements',  icon: <BellIcon /> },
       { to: '/admin/hours',         label: 'Store Hours',    icon: <ClockIcon /> },
       { to: '/admin/page-photos',   label: 'Page Photos',    icon: <GalleryIcon /> },
+      { to: '/admin/home-video',    label: 'Home Video',     icon: <FilmIcon /> },
     ],
   },
   {
@@ -69,6 +70,7 @@ const PAGE_TITLES = {
   '/admin/repair-media':   'Repair Media',
   '/admin/repair-videos':  'Repair Videos',
   '/admin/page-photos':    'Page Photos',
+  '/admin/home-video':     'Home Video',
   '/admin/bookings':       'Bookings',
   '/admin/settings':       'Settings',
 }
@@ -290,6 +292,15 @@ function GalleryIcon() {
       <rect x="14" y="3" width="7" height="7" rx="1"/>
       <rect x="3" y="14" width="7" height="7" rx="1"/>
       <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+  )
+}
+
+function FilmIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <polygon points="10 9 15 12 10 15 10 9"/>
     </svg>
   )
 }

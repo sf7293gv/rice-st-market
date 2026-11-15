@@ -9,6 +9,7 @@ import { STORE_NAME, STORE_ADDRESS, STORE_PHONE, STORE_PHONE_TEL, STORE_PHONE_2,
 import { DAYS_ORDER, DEFAULT_HOURS, DEFAULT_OPEN, DEFAULT_CLOSE, storeTodayName, storeStatus } from '../lib/hours'
 import { useHydrated } from '../hooks/useHydrated'
 import { useCarriers, joinNames } from '../hooks/useCarriers'
+import HeroVideo from '../components/HeroVideo'
 import './Home.css'
 
 
@@ -89,6 +90,7 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="hero">
         <div className="hero-bg" aria-hidden="true" />
+        <HeroVideo />
         <div className="hero-content container" ref={heroRef}>
           <p className="hero-eyebrow fade-up is-visible">Rice Street · St. Paul, MN</p>
           <h1 className="hero-title fade-up is-visible" style={{ transitionDelay: '0.1s' }}>
