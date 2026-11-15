@@ -34,7 +34,7 @@ for (const r of ROUTES.filter(r => r.path !== '/')) {
 }
 
 // Public data baked into the HTML (carriers for the footer/Home/JSON-LD on every page, hours for
-// the store JSON-LD, plans for /plans). A failed or slow fetch must not fail the build: pages then
+// the store JSON-LD, plans for /plans, page_photos for each page's photo gallery, e.g. /grocery). A failed or slow fetch must not fail the build: pages then
 // pre-render without it and the browser fetches it as usual.
 async function fetchTable(table, order) {
   const env = loadEnv('production', root, 'VITE_')
@@ -52,14 +52,22 @@ async function fetchTable(table, order) {
   }
 }
 
-const [carriers, plans, hours] = await Promise.all([
+const [carriers, plans, hours, pagePhotos] = await Promise.all([
   fetchTable('carriers', 'display_order.asc'),
   fetchTable('plans', 'display_order.asc'),
   fetchTable('hours'),
+  fetchTable('page_photos', 'page.asc,display_order.asc,created_at.asc'),
 ])
 const buildYear = new Date().getFullYear()
 const shared = { buildYear, carriers, hours }
-const dataFor = path => (path === '/plans' ? { ...shared, plans } : shared)
+
+// A route's gallery photos are the page_photos rows whose page matches the route ('/grocery' → 'grocery').
+// Only pages with photos get the key, so other pages' HTML doesn't carry it.
+function photosFor(path) {
+  const rows = pagePhotos?.filter(p => p.page === path.slice(1))
+  return rows?.length ? { pagePhotos: { [path.slice(1)]: rows } } : {}
+}
+const dataFor = path => ({ ...shared, ...(path === '/plans' ? { plans } : {}), ...photosFor(path) })
 
 const { render } = await import(pathToFileURL(resolve(ssrDir, 'entry-server.js')).href)
 const template = readFileSync(resolve(dist, 'index.html'), 'utf8')

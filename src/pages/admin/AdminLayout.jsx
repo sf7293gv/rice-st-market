@@ -20,6 +20,7 @@ const NAV = [
       { to: '/admin/specials',      label: 'Weekly Specials',icon: <SpecialsIcon /> },
       { to: '/admin/announcements', label: 'Announcements',  icon: <BellIcon /> },
       { to: '/admin/hours',         label: 'Store Hours',    icon: <ClockIcon /> },
+      { to: '/admin/page-photos',   label: 'Page Photos',    icon: <GalleryIcon /> },
     ],
   },
   {
@@ -67,6 +68,7 @@ const PAGE_TITLES = {
   '/admin/repairs':        'Repair Services',
   '/admin/repair-media':   'Repair Media',
   '/admin/repair-videos':  'Repair Videos',
+  '/admin/page-photos':    'Page Photos',
   '/admin/bookings':       'Bookings',
   '/admin/settings':       'Settings',
 }
@@ -277,6 +279,17 @@ function PhotoIcon() {
       <rect x="3" y="3" width="18" height="18" rx="2"/>
       <circle cx="8.5" cy="8.5" r="1.5"/>
       <polyline points="21 15 16 10 5 21"/>
+    </svg>
+  )
+}
+
+function GalleryIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
     </svg>
   )
 }

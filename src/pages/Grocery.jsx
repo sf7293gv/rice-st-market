@@ -1,13 +1,15 @@
 // Grocery page — fetches active items in the Groceries/Drinks/Snacks categories and
 // renders a filterable grid. Based on the former Menu.jsx's fetch/render logic, scoped
 // down to this page's own category subset (no "All" — clicking the active filter again
-// clears it back to showing all three categories combined).
+// clears it back to showing all three categories combined). Below the grid, an "Inside Our Store"
+// photo gallery (page_photos, page 'grocery') appears once the admin uploads photos.
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useFadeIn } from '../hooks/useScrollAnimation'
 import { Helmet } from 'react-helmet-async'
 import { STORE_NAME, SITE_URL } from '../lib/siteConfig'
+import PhotoGallery from '../components/PhotoGallery'
 import './Grocery.css'
 
 const CATEGORIES = ['Groceries', 'Drinks', 'Snacks']
@@ -114,6 +116,14 @@ export default function Grocery() {
           )}
         </div>
       </section>
+
+      {/* ── Store photos (Admin → Page Photos); below the grid so it doesn't push items down as it loads ── */}
+      <PhotoGallery
+        page="grocery"
+        eyebrow="Our Store"
+        title="Inside Our Store"
+        subtitle={`A look at the aisles and shelves at ${STORE_NAME}.`}
+      />
 
     </div>
   )
