@@ -1,6 +1,7 @@
 // "Watch Our Repairs" — videos uploaded through Admin → Repair Media (repair_media rows with
-// type 'video'), played with native <video> elements. The Repairs page passes them in (it already
-// loads repair_media); photos stay in the Before & After section, so nothing shows twice.
+// type 'video', in display_order), played with native <video> elements showing their poster until
+// tapped. The Repairs page passes them in (it already loads repair_media); photos stay in the
+// Before & After section, so nothing shows twice.
 // The heading, intro line and follow button are pre-rendered; videos render after hydration.
 import { useState } from 'react'
 import { useHydrated } from '../hooks/useHydrated'
@@ -41,7 +42,14 @@ export default function RepairVideos({ videos = [], alt = false }) {
               {visible.map(v => (
                 <figure key={v.id} className="repair-video">
                   <div className="repair-video-frame">
-                    <video src={v.url} controls playsInline preload="metadata" aria-label={v.description || 'Repair video'} />
+                    <video
+                      src={v.url}
+                      poster={v.poster_url ?? undefined}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      aria-label={v.description || 'Repair video'}
+                    />
                   </div>
                   {v.description && <figcaption className="repair-video-title">{v.description}</figcaption>}
                 </figure>

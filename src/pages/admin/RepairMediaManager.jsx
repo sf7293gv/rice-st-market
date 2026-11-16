@@ -1,5 +1,6 @@
-// Repair media CRUD — upload before/after photos to the images Storage bucket.
-// On delete, the storage path is parsed from the public URL so the file is removed from the bucket too.
+// Repair media CRUD — photos go to the images bucket, videos to the videos bucket.
+// Listed in the same order as the Repairs page (display_order, then newest first).
+// On delete, storage paths are parsed from the public URLs so the file (and a video's poster) is removed too.
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '../../lib/supabase'
 import ConfirmDialog from './ConfirmDialog'
@@ -24,6 +25,7 @@ export default function RepairMediaManager() {
     const { data } = await supabase
       .from('repair_media')
       .select('*')
+      .order('display_order')
       .order('created_at', { ascending: false })
     if (data) setMedia(data)
     setLoading(false)
@@ -83,6 +85,10 @@ export default function RepairMediaManager() {
     const urlParts = item.url.split(`/object/public/${bucket}/`)
     if (urlParts.length === 2) {
       await supabase.storage.from(bucket).remove([decodeURIComponent(urlParts[1])])
+    }
+    const posterParts = item.poster_url?.split('/object/public/images/') ?? []
+    if (posterParts.length === 2) {
+      await supabase.storage.from('images').remove([decodeURIComponent(posterParts[1])])
     }
 
     const { error } = await supabase.from('repair_media').delete().eq('id', item.id)
@@ -184,6 +190,7 @@ export default function RepairMediaManager() {
                     ? (
                       <video
                         src={item.url}
+                        poster={item.poster_url ?? undefined}
                         preload="metadata"
                         muted
                         playsInline

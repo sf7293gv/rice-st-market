@@ -1,10 +1,10 @@
-/* ══ Watch Our Repairs (TikTok) ══════════════════════════════ */
+/* ══ Watch Our Repairs (uploaded videos) ═════════════════════ */
 .repair-videos-intro {
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Up to 3 columns of ≤325px embeds; columns drop to 2 and then 1 as the screen narrows. */
+/* Up to 3 columns of ≤325px videos; columns drop to 2 and then 1 as the screen narrows. */
 .repair-videos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 325px));

@@ -79,7 +79,7 @@ export default function Repairs() {
         { data: settingsData },
       ] = await Promise.all([
         supabase.from('repair_services').select('*').eq('active', true).order('created_at'),
-        supabase.from('repair_media').select('*').order('created_at', { ascending: false }),
+        supabase.from('repair_media').select('*').order('display_order').order('created_at', { ascending: false }),
         supabase.from('hours').select('*'),
         supabase.from('settings').select('key, value').in('key', ['owner_phone']),
       ])
