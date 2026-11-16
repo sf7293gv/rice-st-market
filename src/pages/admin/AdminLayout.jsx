@@ -1,7 +1,12 @@
 // Admin shell — responsive sidebar navigation, mobile hamburger overlay, and top bar with logged-in user.
 // Sidebar closes automatically on route change (mobile UX).
-import { useState, useEffect } from 'react'
-import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom'
+// New-appointment alert on every admin page: while any booking has status 'new' there's a red sticky
+// banner linking to Appointments, a red count on the nav item and "(N) New appointment!" in the tab
+// title; an optional short beep plays when the count goes up (off until the admin enables it, since
+// browsers block sound before a tap). Kept live with Supabase Realtime plus 30 s polling; changes are
+// passed to the Appointments page through the outlet context (bookingsVersion).
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { Outlet, NavLink, Link, useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { SHOW_TOBACCO_PAGE, STORE_NAME_SHORT, STORE_INITIALS } from '../../lib/siteConfig'
 import '../../styles/admin.css'
@@ -44,7 +49,7 @@ const NAV = [
     links: [
       { to: '/admin/repairs',       label: 'Repair Services', icon: <WrenchIcon /> },
       { to: '/admin/repair-media',  label: 'Repair Media',    icon: <PhotoIcon /> },
-      { to: '/admin/bookings',      label: 'Bookings',        icon: <CalendarIcon /> },
+      { to: '/admin/appointments',  label: 'Appointments',    icon: <CalendarIcon />, badge: 'newAppointments' },
     ],
   },
   {
@@ -71,7 +76,7 @@ const PAGE_TITLES = {
   '/admin/repair-videos':  'Repair Videos',
   '/admin/page-photos':    'Page Photos',
   '/admin/home-video':     'Home Video',
-  '/admin/bookings':       'Bookings',
+  '/admin/appointments':   'Appointments',
   '/admin/settings':       'Settings',
 }
 
@@ -95,6 +100,10 @@ export default function AdminLayout() {
     await supabase.auth.signOut()
     navigate('/admin/login', { replace: true })
   }
+
+  const { newCount, bookingsVersion, refreshAlerts } = useNewAppointments()
+  const [soundOn, setSoundOn] = useAlertSound(newCount)
+  useTabTitleAlert(newCount)
 
   const userEmail = session?.user?.email ?? ''
   const initials = userEmail ? userEmail.slice(0, 2).toUpperCase() : STORE_INITIALS.slice(0, 2)
@@ -126,6 +135,9 @@ export default function AdminLayout() {
                 >
                   {link.icon}
                   {link.label}
+                  {link.badge === 'newAppointments' && newCount > 0 && (
+                    <span className="adm-nav-alert" aria-label={`${newCount} new`}>{newCount}</span>
+                  )}
                 </NavLink>
               ))}
             </div>
@@ -147,6 +159,16 @@ export default function AdminLayout() {
 
       {/* Main */}
       <div className="admin-main">
+        <div className="adm-sticky-top">
+        {newCount > 0 && (
+          <Link to="/admin/appointments" className="adm-appt-alert" role="alert">
+            <span className="adm-appt-alert-pulse" aria-hidden="true" />
+            <span className="adm-appt-alert-text">
+              {newCount} NEW APPOINTMENT REQUEST{newCount === 1 ? '' : 'S'}: CALL THE CUSTOMER NOW
+            </span>
+            <span className="adm-appt-alert-go" aria-hidden="true">→</span>
+          </Link>
+        )}
         <header className="adm-topbar">
           <button
             className="adm-topbar-menu"
@@ -159,14 +181,27 @@ export default function AdminLayout() {
           <span className="adm-page-title">{pageTitle}</span>
           <div className="adm-topbar-spacer" />
 
+          <button
+            type="button"
+            className={`adm-sound-btn${soundOn ? ' on' : ''}`}
+            onClick={() => setSoundOn(!soundOn)}
+            aria-pressed={soundOn}
+            aria-label="Alert sound for new appointments"
+            title={soundOn ? 'Alert sound is on. Tap to turn it off.' : 'Play a short sound when a new appointment request arrives'}
+          >
+            {soundOn ? <SoundOnIcon /> : <SoundOffIcon />}
+            <span className="adm-sound-label">{soundOn ? 'Alert sound on' : 'Enable alert sound'}</span>
+          </button>
+
           <div className="adm-topbar-user">
             <span className="adm-user-email">{userEmail}</span>
             <div className="adm-user-avatar" aria-hidden="true">{initials}</div>
           </div>
         </header>
+        </div>
 
         <div className="adm-content">
-          <Outlet />
+          <Outlet context={{ bookingsVersion, userEmail, refreshAlerts }} />
         </div>
       </div>
 
@@ -174,7 +209,122 @@ export default function AdminLayout() {
   )
 }
 
+/* ── New-appointment alert ─────────────────────────────────── */
+
+// Count of bookings with status 'new', kept live. bookingsVersion bumps on every change (and on
+// each poll) so pages showing bookings can refetch.
+function useNewAppointments() {
+  const [newCount, setNewCount] = useState(0)
+  const [bookingsVersion, setBookingsVersion] = useState(0)
+  const refreshRef = useRef(() => {})
+
+  useEffect(() => {
+    let alive = true
+    const refresh = () => supabase
+      .from('bookings')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'new')
+      .then(({ count, error }) => {
+        if (!alive) return
+        if (error) { console.error('new appointments count error:', error); return }
+        setNewCount(count ?? 0)
+      })
+    const changed = () => { refresh(); setBookingsVersion(v => v + 1) }
+    refreshRef.current = refresh
+
+    refresh()
+    const channel = supabase
+      .channel('admin-bookings-alert')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, changed)
+      .subscribe()
+    const poll = setInterval(changed, 30000)
+
+    return () => {
+      alive = false
+      clearInterval(poll)
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  // Lets a page update the count right after the admin changes a booking.
+  const refreshAlerts = useCallback(() => refreshRef.current(), [])
+
+  return { newCount, bookingsVersion, refreshAlerts }
+}
+
+// "(N) New appointment! …" in the browser tab while any request is new.
+function useTabTitleAlert(newCount) {
+  useEffect(() => {
+    if (newCount <= 0) return
+    const base = document.title.replace(/^\(\d+\) New appointment! /, '')
+    document.title = `(${newCount}) New appointment! ${base}`
+    return () => { document.title = base }
+  }, [newCount])
+}
+
+// Short two-tone beep (Web Audio, no file). Off until the admin turns it on; the tap that turns
+// it on also unlocks audio in the browser, so it has to be turned on again after a reload.
+function useAlertSound(newCount) {
+  const [soundOn, setSoundOnState] = useState(false)
+  const ctxRef = useRef(null)
+  const prevCount = useRef(null)
+
+  function beep() {
+    const ctx = ctxRef.current
+    if (!ctx) return
+    const now = ctx.currentTime
+    ;[0, 0.22].forEach((offset, i) => {
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+      osc.type = 'sine'
+      osc.frequency.value = i === 0 ? 880 : 1175
+      gain.gain.setValueAtTime(0.0001, now + offset)
+      gain.gain.exponentialRampToValueAtTime(0.35, now + offset + 0.02)
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.18)
+      osc.connect(gain).connect(ctx.destination)
+      osc.start(now + offset)
+      osc.stop(now + offset + 0.2)
+    })
+  }
+
+  function setSoundOn(on) {
+    if (on) {
+      const Ctx = window.AudioContext || window.webkitAudioContext
+      if (!Ctx) return
+      ctxRef.current = ctxRef.current ?? new Ctx()
+      ctxRef.current.resume?.()
+      beep() // confirms it works
+    }
+    setSoundOnState(on)
+  }
+
+  useEffect(() => {
+    if (soundOn && prevCount.current !== null && newCount > prevCount.current) beep()
+    prevCount.current = newCount
+  }, [newCount, soundOn])
+
+  return [soundOn, setSoundOn]
+}
+
 /* ── Icons ─────────────────────────────────────────────────── */
+function SoundOnIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 010 7.07"/><path d="M19.07 4.93a10 10 0 010 14.14"/>
+    </svg>
+  )
+}
+
+function SoundOffIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+  )
+}
+
 function DashIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

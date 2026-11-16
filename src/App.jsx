@@ -34,7 +34,7 @@ import RepairMediaManager from './pages/admin/RepairMediaManager'
 import RepairVideosManager from './pages/admin/RepairVideosManager'
 import PagePhotosManager from './pages/admin/PagePhotosManager'
 import HomeVideoManager from './pages/admin/HomeVideoManager'
-import BookingsManager from './pages/admin/BookingsManager'
+import AppointmentsManager from './pages/admin/AppointmentsManager'
 import AdminSettings from './pages/admin/AdminSettings'
 import TobaccoManager from './pages/admin/TobaccoManager'
 
@@ -86,7 +86,8 @@ export default function App() {
         <Route path="repair-videos" element={<RepairVideosManager />} />
         <Route path="page-photos" element={<PagePhotosManager />} />
         <Route path="home-video" element={<HomeVideoManager />} />
-        <Route path="bookings" element={<BookingsManager />} />
+        <Route path="appointments" element={<AppointmentsManager />} />
+        <Route path="bookings" element={<Navigate to="/admin/appointments" replace />} />
         <Route path="tobacco" element={<TobaccoManager />} />
         <Route path="settings" element={<AdminSettings />} />
       </Route>

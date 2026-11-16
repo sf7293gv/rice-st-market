@@ -359,7 +359,6 @@ function BookingForm({ services, hours, ownerPhone }) {
       booking_date:  form.date,
       booking_time:  form.time + ':00',
       notes:         form.notes.trim() || null,
-      status:        'pending',
     })
 
     if (error) {

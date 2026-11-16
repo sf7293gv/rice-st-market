@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { STORE_NAME } from '../../lib/siteConfig'
+import { STATUS_LABEL, STATUS_BADGE } from '../../lib/appointments'
 
 function fmtDate(d) {
   if (!d) return ''
@@ -19,11 +20,6 @@ function fmt12h(t) {
   return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${ampm}`
 }
 
-const STATUS_STYLE = {
-  pending:   { cls: 'adm-badge adm-badge-amber', label: 'Pending' },
-  confirmed: { cls: 'adm-badge adm-badge-green', label: 'Confirmed' },
-  cancelled: { cls: 'adm-badge adm-badge-gray',  label: 'Cancelled' },
-}
 
 export default function Dashboard() {
   const [counts, setCounts]   = useState(null)
@@ -45,7 +41,7 @@ export default function Dashboard() {
         supabase.from('items').select('*', { count: 'exact', head: true }),
         supabase.from('products').select('*', { count: 'exact', head: true }).eq('active', true),
         supabase.from('repair_services').select('*', { count: 'exact', head: true }).eq('active', true),
-        supabase.from('bookings').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('bookings').select('*', { count: 'exact', head: true }).eq('status', 'new'),
         supabase.from('specials').select('*', { count: 'exact', head: true }).eq('active', true),
         supabase.from('announcements').select('*', { count: 'exact', head: true }).eq('active', true),
         supabase.from('inquiries').select('*', { count: 'exact', head: true }).eq('status', 'new'),
@@ -112,7 +108,7 @@ export default function Dashboard() {
           <div>
             <div className="adm-stat-val">{v('pending')}</div>
             <div className="adm-stat-lbl">
-              Pending Bookings
+              New Appointment Requests
               {!loading && counts?.pending > 0 && (
                 <span className="dash-alert-dot" aria-label="Needs attention" />
               )}
@@ -159,8 +155,8 @@ export default function Dashboard() {
         {/* Recent bookings */}
         <div className="adm-panel dash-bookings-panel">
           <div className="dash-panel-hd">
-            <span>Recent Bookings</span>
-            <Link to="/admin/bookings" className="dash-view-all">
+            <span>Recent Appointment Requests</span>
+            <Link to="/admin/appointments" className="dash-view-all">
               View all →
             </Link>
           </div>
@@ -178,7 +174,7 @@ export default function Dashboard() {
           ) : (
             <div className="dash-booking-list">
               {bookings.map(b => {
-                const st = STATUS_STYLE[b.status] ?? STATUS_STYLE.pending
+                const st = { cls: STATUS_BADGE[b.status] ?? 'adm-badge adm-badge-gray', label: STATUS_LABEL[b.status] ?? b.status }
                 return (
                   <div key={b.id} className="dash-booking-row">
                     <div className="dash-booking-main">
@@ -212,9 +208,9 @@ export default function Dashboard() {
               <PlusIcon />
               Add Shop Product
             </Link>
-            <Link to="/admin/bookings" className="adm-shortcut">
+            <Link to="/admin/appointments" className="adm-shortcut">
               <CalendarIcon />
-              View Bookings
+              View Appointments
             </Link>
             <Link to="/admin/specials" className="adm-shortcut">
               <TagIcon />

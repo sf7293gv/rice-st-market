@@ -1532,3 +1532,83 @@
   .adm-modal-hd, .adm-modal-ft { padding: 14px 16px; }
   .adm-toast { right: 12px; bottom: 16px; left: 12px; max-width: 100%; }
 }
+
+/* ── New-appointment alert (AdminLayout) ─────────────────────── */
+/* Banner + top bar stick together at the top of every admin page. */
+.adm-sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.adm-sticky-top .adm-topbar { position: relative; top: auto; }
+
+.adm-appt-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 28px;
+  background: #dc2626;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  line-height: 1.3;
+}
+.adm-appt-alert:hover { background: #b91c1c; }
+.adm-appt-alert:focus-visible { outline: 3px solid #111; outline-offset: -3px; }
+.adm-appt-alert-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.adm-appt-alert-go { font-size: 1.3rem; }
+.adm-appt-alert-pulse {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  animation: adm-appt-pulse 1.2s ease-in-out infinite;
+}
+@keyframes adm-appt-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.7); }
+}
+
+.adm-nav-alert {
+  margin-left: auto;
+  min-width: 22px;
+  padding: 2px 7px;
+  border-radius: 100px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.adm-sound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--adm-border);
+  border-radius: 100px;
+  background: var(--adm-white);
+  color: var(--adm-text-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.adm-sound-btn.on { border-color: var(--adm-green); color: var(--adm-green); }
+
+@media (max-width: 768px) {
+  .adm-appt-alert { padding: 10px 16px; font-size: 0.85rem; }
+  .adm-sound-label { display: none; }
+  .adm-sound-btn { min-width: 44px; min-height: 44px; justify-content: center; padding: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-appt-alert-pulse { animation: none; }
+}
