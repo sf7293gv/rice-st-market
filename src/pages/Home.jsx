@@ -10,6 +10,7 @@ import { DAYS_ORDER, DEFAULT_HOURS, DEFAULT_OPEN, DEFAULT_CLOSE, storeTodayName,
 import { useHydrated } from '../hooks/useHydrated'
 import { useCarriers, joinNames } from '../hooks/useCarriers'
 import HeroVideo from '../components/HeroVideo'
+import FeaturedVideo from '../components/FeaturedVideo'
 import './Home.css'
 
 
@@ -164,6 +165,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── See Rice St Market (featured video; hidden when none is active) ── */}
+      <FeaturedVideo />
 
       {/* ── Weekly Specials ── */}
       {specials.length > 0 && (

@@ -1,7 +1,7 @@
-// Background video for the home hero, from the most recently updated active home_video row
-// (Admin → Home Video). Renders only after hydration, so the pre-rendered HTML and first paint
-// are unchanged; the layer is absolutely positioned behind the hero content, so it can't shift
-// layout. It fades in only once the video is actually playing (the hero gradient stays underneath).
+// Background video for the home hero, from the most recently updated active home_video row with
+// placement 'hero' (Admin → Home Video → Hero background). Renders only after hydration, so the
+// pre-rendered HTML and first paint are unchanged; the layer is absolutely positioned behind the
+// hero content, so it can't shift layout. It fades in only once the video is actually playing (the hero gradient stays underneath).
 // Visitors with reduced motion, Save-Data or a 2g connection get the poster (if any) instead,
 // and the video file is never requested. Playback pauses when the hero is off-screen or the tab
 // is hidden.
@@ -29,6 +29,7 @@ export default function HeroVideo() {
     supabase
       .from('home_video')
       .select('video_url, poster_url')
+      .eq('placement', 'hero')
       .eq('is_active', true)
       .order('updated_at', { ascending: false })
       .limit(1)

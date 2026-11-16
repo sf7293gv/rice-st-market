@@ -34,11 +34,12 @@ for (const r of ROUTES.filter(r => r.path !== '/')) {
 }
 
 // Public data baked into the HTML (carriers for the footer/Home/JSON-LD on every page, hours for
-// the store JSON-LD, plans for /plans, page_photos for each page's photo gallery, e.g. /grocery). A failed or slow fetch must not fail the build: pages then
+// the store JSON-LD, plans for /plans, page_photos for each page's photo gallery, e.g. /grocery,
+// and the active featured home_video for /, so its section heading is in the static HTML). A failed or slow fetch must not fail the build: pages then
 // pre-render without it and the browser fetches it as usual.
-async function fetchTable(table, order) {
+async function fetchTable(table, order, filter = '') {
   const env = loadEnv('production', root, 'VITE_')
-  const url = `${env.VITE_SUPABASE_URL}/rest/v1/${table}?select=*${order ? `&order=${order}` : ''}`
+  const url = `${env.VITE_SUPABASE_URL}/rest/v1/${table}?select=*${order ? `&order=${order}` : ''}${filter}`
   try {
     const res = await fetch(url, {
       headers: { apikey: env.VITE_SUPABASE_ANON_KEY, Authorization: `Bearer ${env.VITE_SUPABASE_ANON_KEY}` },
@@ -52,11 +53,12 @@ async function fetchTable(table, order) {
   }
 }
 
-const [carriers, plans, hours, pagePhotos] = await Promise.all([
+const [carriers, plans, hours, pagePhotos, featuredVideos] = await Promise.all([
   fetchTable('carriers', 'display_order.asc'),
   fetchTable('plans', 'display_order.asc'),
   fetchTable('hours'),
   fetchTable('page_photos', 'page.asc,display_order.asc,created_at.asc'),
+  fetchTable('home_video', 'updated_at.desc', '&placement=eq.featured&is_active=eq.true&limit=1'),
 ])
 const buildYear = new Date().getFullYear()
 const shared = { buildYear, carriers, hours }
@@ -67,7 +69,13 @@ function photosFor(path) {
   const rows = pagePhotos?.filter(p => p.page === path.slice(1))
   return rows?.length ? { pagePhotos: { [path.slice(1)]: rows } } : {}
 }
-const dataFor = path => ({ ...shared, ...(path === '/plans' ? { plans } : {}), ...photosFor(path) })
+const featuredVideo = featuredVideos?.[0]
+const dataFor = path => ({
+  ...shared,
+  ...(path === '/plans' ? { plans } : {}),
+  ...(path === '/' && featuredVideo ? { featuredVideo } : {}),
+  ...photosFor(path),
+})
 
 const { render } = await import(pathToFileURL(resolve(ssrDir, 'entry-server.js')).href)
 const template = readFileSync(resolve(dist, 'index.html'), 'utf8')
