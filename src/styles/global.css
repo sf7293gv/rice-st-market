@@ -249,3 +249,48 @@ button {
     margin-bottom: 24px;
   }
 }
+
+/* ── Book Appointment: the site's primary call to action ──
+   Brand orange with near-black text (6.2:1 contrast) and a two-tone focus ring that shows on
+   both dark and light backgrounds. */
+.btn-book {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 12px 26px;
+  background: var(--primary);
+  color: #111111;
+  border: 2px solid transparent;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(232, 132, 26, 0.35);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.btn-book:hover {
+  background: var(--primary-light);
+  color: #111111;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(232, 132, 26, 0.45);
+}
+.btn-book:active { transform: translateY(0); }
+.btn-book:focus-visible,
+.btn-book-focus:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px #111111;
+}
+.btn-book-lg {
+  min-height: 60px;
+  padding: 16px 34px;
+  font-size: 1.15rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-book, .btn-book:hover { transition: none; transform: none; }
+}

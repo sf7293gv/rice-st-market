@@ -630,105 +630,107 @@
 
 /* ══ Repair CTA band ═══════════════════════════════════════ */
 .repair-cta-section {
-  background: linear-gradient(100deg, #1A1A1A 0%, #4a2f0f 55%, #c96b1a 100%);
-  padding: 52px 0;
+  background: var(--primary);
+  padding: 36px 0;
   position: relative;
-  overflow: hidden;
-}
-
-.repair-cta-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 80% 50%, rgba(232,132,26,0.22) 0%, transparent 60%);
-  pointer-events: none;
+  border-bottom: 4px solid #111111;
 }
 
 .repair-cta-inner {
-  position: relative;
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
 }
 
 .repair-cta-icon {
   flex-shrink: 0;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: rgba(232,132,26,0.18);
-  border: 1px solid rgba(232,132,26,0.4);
+  background: #111111;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--primary);
 }
 
-.repair-cta-text {
+/* One bold line, near-black on brand orange (6.2:1). */
+.repair-cta-title {
   flex: 1;
   min-width: 0;
-}
-
-.repair-cta-title {
-  font-size: clamp(1.25rem, 3vw, 1.6rem);
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.3px;
-  line-height: 1.2;
-  margin: 0 0 6px;
-}
-
-.repair-cta-sub {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.55);
+  font-size: clamp(1.35rem, 3.2vw, 2rem);
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
   margin: 0;
-  line-height: 1.5;
 }
 
 .repair-cta-btn {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  background: #E8841A;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 14px 30px;
+  background: #111111;
   color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1.05rem;
+  font-weight: 800;
   text-decoration: none;
   border-radius: 100px;
   letter-spacing: 0.2px;
   white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(232,132,26,0.45);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .repair-cta-btn:hover {
-  background: #5BC8C0;
+  background: #2a2a2a;
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(91,200,192,0.5);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.3);
 }
 
-.repair-cta-btn:active {
-  transform: translateY(0);
+.repair-cta-btn:active { transform: translateY(0); }
+
+.repair-cta-btn:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px #111111;
 }
+
+/* Hero: one big primary action, one smaller secondary. Both sit on the hero gradient or the
+   video overlay (rgba(13,0,0,.72)), so the colours hold either way. */
+.hero-cta .hero-book-btn { box-shadow: 0 8px 28px rgba(232,132,26,0.45); }
+.hero-cta .hero-call-btn { font-size: 0.9rem; padding: 9px 20px; }
+.hero-cta .hero-call-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 2px; }
 
 @media (max-width: 768px) {
-  .repair-cta-section {
-    padding: 40px 0;
-  }
+  .repair-cta-section { padding: 28px 0; }
 
   .repair-cta-inner {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+    align-items: stretch;
+    gap: 18px;
+    text-align: center;
   }
+
+  .repair-cta-icon { display: none; }
 
   .repair-cta-btn {
     width: 100%;
-    justify-content: center;
-    padding: 15px 24px;
+    white-space: normal;
   }
+
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .hero-cta .hero-book-btn,
+  .hero-cta .hero-call-btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .repair-cta-btn, .repair-cta-btn:hover { transition: none; transform: none; }
 }
 
 @media (max-width: 480px) {

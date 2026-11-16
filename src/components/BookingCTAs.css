@@ -1,0 +1,104 @@
+/* ══ Book Appointment: mobile bottom bar + desktop floating pill ══════════════ */
+:root { --cta-bar-h: 72px; }
+
+/* ── Mobile bottom bar ── */
+.mobile-cta-bar { display: none; }
+
+@media (max-width: 768px) {
+  .mobile-cta-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 160;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 10px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    background: #111111;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.25);
+    transform: translateY(0);
+    visibility: visible;
+    transition: transform 0.25s ease, visibility 0s linear 0s;
+  }
+  .mobile-cta-bar.is-hidden {
+    transform: translateY(110%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+  }
+
+  .mobile-cta-bar a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.15;
+    text-align: center;
+    text-decoration: none;
+  }
+  .mobile-cta-book { background: var(--primary); color: #111111; }
+  .mobile-cta-book:hover { background: var(--primary-light); color: #111111; }
+  .mobile-cta-call { background: #ffffff; color: #111111; }
+  .mobile-cta-call:hover { background: #f0f0f0; color: #111111; }
+
+  /* Keep the end of every page reachable above the bar. */
+  .footer { padding-bottom: calc(var(--cta-bar-h) + env(safe-area-inset-bottom)); }
+
+  /* Floating WhatsApp / back-to-top always sit above the bar's space (moving them when the bar
+     hides would count as layout shift). */
+  body .wa-float { bottom: calc(var(--cta-bar-h) + 14px + env(safe-area-inset-bottom)); }
+  body .btt-btn { bottom: calc(var(--cta-bar-h) + 76px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 360px) {
+  .mobile-cta-bar a { font-size: 0.9rem; gap: 6px; }
+  .mobile-cta-bar svg { display: none; }
+}
+
+/* ── Desktop floating pill ── */
+.booking-pill { display: none; }
+
+@media (min-width: 769px) {
+  .booking-pill {
+    position: fixed;
+    /* left of the WhatsApp button (28px from the edge, 58px wide) */
+    right: 100px;
+    bottom: 32px;
+    z-index: 150;
+    display: inline-flex;
+    min-height: 50px;
+    padding: 12px 24px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+  }
+  .booking-pill.is-shown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0s;
+  }
+  .booking-pill.is-shown:hover { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-cta-bar, .mobile-cta-bar.is-hidden, .booking-pill, .booking-pill.is-shown { transition: none; }
+}
+
+/* WhatsApp / back-to-top step aside while they'd cover the featured video player
+   (opacity/visibility only, so nothing shifts). */
+.floating-over-video .wa-float,
+.floating-over-video .btt-btn {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

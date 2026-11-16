@@ -11,6 +11,7 @@ import { useHydrated } from '../hooks/useHydrated'
 import { useCarriers, joinNames } from '../hooks/useCarriers'
 import HeroVideo from '../components/HeroVideo'
 import FeaturedVideo from '../components/FeaturedVideo'
+import BookLink from '../components/BookLink'
 import './Home.css'
 
 
@@ -106,15 +107,39 @@ export default function Home() {
             </p>
           )}
           <div className="hero-cta fade-up is-visible" style={{ transitionDelay: '0.3s' }}>
-            <Link to="/electronics" className="btn-primary">Explore Devices</Link>
-            <Link to="/repairs" className="btn-primary">Explore Our Services</Link>
-            <Link to="/contact" className="btn-outline-white">Get Directions</Link>
+            <BookLink className="btn-book btn-book-lg hero-book-btn">
+              <CalendarIcon />
+              Book a Repair Appointment
+            </BookLink>
+            <a href={STORE_PHONE_TEL} className="btn-outline-white hero-call-btn">
+              <PhoneIcon />
+              Call {STORE_PHONE}
+            </a>
           </div>
           <div className={`hero-badge fade-up is-visible${status.isOpen ? '' : ' is-closed'}`} style={{ transitionDelay: '0.4s' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <circle cx="12" cy="12" r="10"/>
             </svg>
             {status.label}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Repair CTA (directly below the hero) ── */}
+      <section className="repair-cta-section" aria-label="Book a repair">
+        <div className="container">
+          <div className="repair-cta-inner">
+            <div className="repair-cta-icon" aria-hidden="true">
+              <WrenchIcon />
+            </div>
+            <h2 className="repair-cta-title">Phone, tablet or laptop broken? Book in 1 minute.</h2>
+            <BookLink className="repair-cta-btn">
+              Book a Repair Appointment
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </BookLink>
           </div>
         </div>
       </section>
@@ -141,30 +166,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-      {/* ── Repair CTA ── */}
-      <section className="repair-cta-section">
-        <div className="container">
-          <div className="repair-cta-inner">
-            <div className="repair-cta-icon" aria-hidden="true">
-              <WrenchIcon />
-            </div>
-            <div className="repair-cta-text">
-              <h2 className="repair-cta-title">Device broken? We fix it!</h2>
-              <p className="repair-cta-sub">
-                Fast turnaround · Fair prices · Book online in 60&nbsp;seconds
-              </p>
-            </div>
-            <Link to="/repairs#booking" className="repair-cta-btn">
-              Book a Repair Appointment
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* ── See Rice St Market (featured video; hidden when none is active) ── */}
       <FeaturedVideo />
@@ -343,6 +344,23 @@ export default function Home() {
       </section>
 
     </div>
+  )
+}
+
+function CalendarIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+  )
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
   )
 }
 

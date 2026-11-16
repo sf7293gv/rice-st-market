@@ -120,7 +120,7 @@
 }
 
 /* ── Mobile ── */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .hamburger {
     display: flex;
   }
@@ -165,4 +165,83 @@
     color: var(--white);
     background: rgba(232, 132, 26, 0.22);
   }
+}
+
+/* ── Book Appointment (primary call to action) ── */
+.navbar-links .nav-book-item { margin-right: 8px; }
+
+.navbar-links a.nav-book-btn {
+  padding: 9px 18px;
+  min-height: 44px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #111111;
+  border-radius: 100px;
+  white-space: nowrap;
+  display: inline-flex;
+}
+.navbar-links a.nav-book-btn:hover { background: var(--primary-light); color: #111111; }
+.navbar-links a.nav-book-btn.active { background: var(--primary); color: #111111; }
+
+.navbar-links a:focus-visible,
+.navbar-logo:focus-visible,
+.hamburger:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Persistent mobile header button (next to the menu icon) */
+.nav-book-mobile { display: none; }
+
+/* Between 1201 and 1320 px the full link row plus the button is tight: narrow the links.
+   At 1200 px and below the menu collapses into the hamburger (with "Book Now" beside it). */
+@media (max-width: 1320px) and (min-width: 1201px) {
+  .navbar-links { gap: 0; }
+  .navbar-links a { padding: 7px 9px; font-size: 0.86rem; }
+  .navbar-links a.nav-book-btn { padding: 9px 16px; font-size: 0.86rem; }
+}
+
+@media (max-width: 1200px) {
+  .navbar-inner { gap: 10px; }
+  .navbar-logo { margin-right: auto; }
+
+  .nav-book-mobile {
+    display: inline-flex;
+    min-height: 44px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    box-shadow: none;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .navbar-links .nav-book-item { margin: 0 0 10px; }
+  .navbar-links a.nav-book-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 52px;
+    font-size: 1.05rem;
+    color: #111111;
+    background: var(--primary);
+  }
+  .navbar-links a.nav-book-btn:hover,
+  .navbar-links a.nav-book-btn.active { color: #111111; background: var(--primary-light); }
+}
+
+@media (max-width: 1200px) {
+  .navbar-logo { flex-shrink: 0; white-space: nowrap; }
+}
+
+@media (max-width: 420px) {
+  .navbar-logo { font-size: 1.25rem; }
+}
+
+@media (max-width: 360px) {
+  .navbar-logo { font-size: 1.1rem; }
+  .nav-book-mobile { padding: 8px 12px; }
+}
+
+@media (max-width: 340px) {
+  .nav-book-now { display: none; }
+  .nav-book-mobile { padding: 8px 14px; }
 }

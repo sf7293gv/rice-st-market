@@ -1,7 +1,11 @@
 // Responsive top navigation — scrolled glass effect, mobile hamburger with overlay.
+// "Book Appointment" (the site's primary call to action) is the first item: an orange button on
+// desktop, the top of the slide-out menu on mobile, plus a persistent "Book Now" button in the
+// mobile header bar next to the menu icon.
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { SHOW_TOBACCO_PAGE } from '../lib/siteConfig'
+import BookLink from './BookLink'
 import './Navbar.css'
 
 const NAV_LINKS = [
@@ -44,6 +48,12 @@ export default function Navbar() {
         </Link>
 
         <ul className={`navbar-links${open ? ' open' : ''}`}>
+          <li className="nav-book-item">
+            <BookLink className="btn-book nav-book-btn" onClick={close}>
+              <CalendarIcon />
+              Book Appointment
+            </BookLink>
+          </li>
           {NAV_LINKS.map(({ to, label }) => (
             <li key={to}>
               <NavLink
@@ -57,6 +67,10 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+
+        <BookLink className="btn-book nav-book-mobile" onClick={close}>
+          Book<span className="nav-book-now"> Now</span>
+        </BookLink>
 
         <button
           className={`hamburger${open ? ' open' : ''}`}
@@ -72,5 +86,14 @@ export default function Navbar() {
 
       {open && <div className="nav-overlay" onClick={close} aria-hidden="true" />}
     </nav>
+  )
+}
+
+function CalendarIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
   )
 }
